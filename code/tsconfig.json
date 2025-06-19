@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false
+  },
+  "include": ["src"],             // ✅ 只编译 src 目录
+  "exclude": ["node_modules", "dist", "public", "postcss.config.js", "tailwind.config.js"]  // ✅ 排除非代码配置文件
+}
