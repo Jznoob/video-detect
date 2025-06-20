@@ -3,12 +3,14 @@ import { Toaster } from "sonner";
 import UploadZone from "./components/UploadZone";
 import DetectParams from "./components/DetectParams";
 import DetectButton from "./components/DetectButton";
+import { detectVideo } from "../../services/detect";
 
 const DetectPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [model, setModel] = useState<string>("YOLO-Fake");
   const [threshold, setThreshold] = useState<number>(0.7);
   const [interval, setInterval] = useState<number>(1);
+
 
   return (
     <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
