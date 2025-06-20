@@ -1,8 +1,7 @@
-import React from "react";
-import { toast } from "sonner";
+import React, { useEffect } from "react";
 
 export interface DetectParamsProps {
-  model?: string;
+  model: string;
   /** 默认选中的模型名称 */
   defaultModel?: string;
   onModelChange: (value: string) => void;
@@ -23,14 +22,19 @@ const DetectParams: React.FC<DetectParamsProps> = ({
   interval,
   onIntervalChange,
 }) => {
+  useEffect(() => {
+    if (defaultModel) {
+      onModelChange(defaultModel);
+    }
+  }, [defaultModel, onModelChange]);
 
   return (
     <div className="space-y-5">
       <div className="space-y-1">
         <label className="block text-sm font-medium">检测模型</label>
         <select
-          {...selectProps}
-          onChange={(e) => handleModelChange(e.target.value)}
+          value={model}
+          onChange={(e) => onModelChange(e.target.value)}
           className="w-full rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
         >
           {models.map((m) => (
@@ -49,11 +53,9 @@ const DetectParams: React.FC<DetectParamsProps> = ({
           max="1"
           required
           value={threshold}
-
+          onChange={(e) => onThresholdChange(parseFloat(e.target.value))}
+          className="w-full rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
         />
-        {thresholdError && (
-          <p className="text-xs text-red-600">{thresholdError}</p>
-        )}
       </div>
       <div className="space-y-1">
         <label className="block text-sm font-medium">帧抽样间隔</label>
@@ -61,10 +63,9 @@ const DetectParams: React.FC<DetectParamsProps> = ({
           type="number"
           min="1"
           value={interval}
-          onChange={(e) => handleInterval(e.target.value)}
+          onChange={(e) => onIntervalChange(parseInt(e.target.value))}
           className="w-full rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
         />
-        {intervalError && <p className="text-xs text-red-600">{intervalError}</p>}
       </div>
     </div>
   );

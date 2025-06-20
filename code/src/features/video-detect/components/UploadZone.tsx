@@ -14,22 +14,19 @@ const allowedTypes = [
 
 const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
   const [file, setFile] = useState<File | null>(null);
-
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // revoke object url when file changed
   useEffect(() => {
     return () => {
-      if (videoUrl) URL.revokeObjectURL(videoUrl);
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
-  }, [videoUrl]);
+  }, [previewUrl]);
 
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
     const f = files[0];
-    const valid =
-      allowedTypes.includes(f.type) || /\.(mp4|mkv|avi)$/i.test(f.name);
+    const valid = allowedTypes.includes(f.type) || /\.(mp4|mkv|avi)$/i.test(f.name);
     if (!valid) {
       toast.error("只支持 MP4/MKV/AVI 格式");
       return;
@@ -40,19 +37,9 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
     }
     const url = URL.createObjectURL(f);
     setFile(f);
-    setVideoUrl(url);
-    setDuration(0);
+    setPreviewUrl(url);
     onFileChange?.(f);
   };
-
-  useEffect(() => {
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-      return () => URL.revokeObjectURL(url);
-    }
-    setPreviewUrl(null);
-  }, [file]);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -75,8 +62,8 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
         className="hidden"
         onChange={(e) => handleFiles(e.target.files)}
       />
-      {file ? (
-
+      {file && previewUrl ? (
+        <video className="mx-auto max-h-60" src={previewUrl} controls />
       ) : (
         <p className="text-gray-500 dark:text-gray-400">拖拽或点击上传视频</p>
       )}

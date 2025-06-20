@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 import UploadZone from "./components/UploadZone";
 import DetectParams from "./components/DetectParams";
 import DetectButton from "./components/DetectButton";
@@ -10,8 +11,26 @@ const DetectPage: React.FC = () => {
   const [model, setModel] = useState<string>("YOLO-Fake");
   const [threshold, setThreshold] = useState<number>(0.7);
   const [interval, setInterval] = useState<number>(1);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-
+  const handleDetect = async () => {
+    if (!file) {
+      toast.error("请先上传视频");
+      return;
+    }
+    setLoading(true);
+    try {
+      const taskId = await detectVideo(file, { model, threshold, interval });
+      toast.success("任务已提交");
+      navigate(`/result?taskId=${taskId}`);
+    } catch (err) {
+      console.error(err);
+      toast.error("检测失败");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
@@ -36,7 +55,8 @@ const DetectPage: React.FC = () => {
             defaultModel="YOLO-Fake"
           />
         </div>
-
+        <div className="text-center">
+          <DetectButton disabled={!file || loading} onClick={handleDetect} />
         </div>
       </main>
     </div>
