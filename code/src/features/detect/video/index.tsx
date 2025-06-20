@@ -38,6 +38,7 @@ const DetectPage: React.FC = () => {
             onThresholdChange={setThreshold}
             interval={interval}
             onIntervalChange={setInterval}
+            defaultModel="YOLO-Fake"
           />
         </div>
         <div className="bg-white dark:bg-[#232B55] rounded-xl shadow p-6 text-center">
