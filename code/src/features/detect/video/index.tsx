@@ -4,6 +4,7 @@ import { Toaster, toast } from "sonner";
 import UploadZone from "./components/UploadZone";
 import DetectParams from "./components/DetectParams";
 import DetectButton from "./components/DetectButton";
+import { detectVideo } from "../../services/detect";
 
 const DetectPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -17,10 +18,18 @@ const DetectPage: React.FC = () => {
       toast.error("请先上传视频");
       return;
     }
-    const id = toast.loading("正在检测...");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    toast.success("检测完成", { id });
-    navigate("/result?id=123");
+    const loadingId = toast.loading("正在提交检测任务...");
+    try {
+      const taskId = await detectVideo(file, {
+        model,
+        threshold,
+        interval,
+      });
+      toast.success("检测已启动", { id: loadingId });
+      navigate(`/result?id=${taskId}`);
+    } catch (e) {
+      toast.error("检测失败", { id: loadingId });
+    }
   };
 
   return (
