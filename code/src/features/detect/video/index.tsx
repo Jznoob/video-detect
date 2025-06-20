@@ -11,10 +11,15 @@ const DetectPage: React.FC = () => {
   const [threshold, setThreshold] = useState<number>(0.7);
   const [interval, setInterval] = useState<number>(1);
   const navigate = useNavigate();
+  const isDisabled = !file || threshold < 0.5 || threshold > 1;
 
   const handleDetect = async () => {
     if (!file) {
       toast.error("请先上传视频");
+      return;
+    }
+    if (threshold < 0.5 || threshold > 1) {
+      toast.error("阈值必须在 0.5-1 之间");
       return;
     }
     const id = toast.loading("正在检测...");
@@ -41,7 +46,7 @@ const DetectPage: React.FC = () => {
           />
         </div>
         <div className="bg-white dark:bg-[#232B55] rounded-xl shadow p-6 text-center">
-          <DetectButton onClick={handleDetect} />
+          <DetectButton onClick={handleDetect} disabled={isDisabled} />
         </div>
       </main>
     </div>

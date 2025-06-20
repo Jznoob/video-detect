@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "sonner";
 
 export interface DetectParamsProps {
   model: string;
@@ -19,6 +20,12 @@ const DetectParams: React.FC<DetectParamsProps> = ({
   interval,
   onIntervalChange,
 }) => {
+  const handleThresholdChange = (value: number) => {
+    onThresholdChange(value);
+    if (value < 0.5 || value > 1) {
+      toast.error("阈值必须在 0.5-1 之间");
+    }
+  };
   return (
     <div className="space-y-4">
       <div>
@@ -42,8 +49,9 @@ const DetectParams: React.FC<DetectParamsProps> = ({
           step="0.01"
           min="0.5"
           max="1"
+          required
           value={threshold}
-          onChange={(e) => onThresholdChange(parseFloat(e.target.value))}
+          onChange={(e) => handleThresholdChange(parseFloat(e.target.value))}
           className="w-full border rounded p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
         />
       </div>
