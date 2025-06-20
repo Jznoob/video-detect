@@ -14,8 +14,7 @@ const allowedTypes = [
 
 const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
   const [file, setFile] = useState<File | null>(null);
-  const [videoUrl, setVideoUrl] = useState<string>("");
-  const [duration, setDuration] = useState<number>(0);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -46,6 +45,15 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
     onFileChange?.(f);
   };
 
+  useEffect(() => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+    setPreviewUrl(null);
+  }, [file]);
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     handleFiles(e.dataTransfer.files);
@@ -68,22 +76,7 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
         onChange={(e) => handleFiles(e.target.files)}
       />
       {file ? (
-        <>
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            controls
-            className="mx-auto mb-2 max-h-64"
-            onLoadedMetadata={() =>
-              setDuration(videoRef.current?.duration ?? 0)
-            }
-          />
-          <p className="text-gray-800 dark:text-gray-100">
-            {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB,
-            {" "}
-            {duration.toFixed(2)}s)
-          </p>
-        </>
+
       ) : (
         <p className="text-gray-500 dark:text-gray-400">拖拽或点击上传视频</p>
       )}
