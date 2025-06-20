@@ -1,30 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import UploadZone from "./components/UploadZone";
 import DetectParams from "./components/DetectParams";
 import DetectButton from "./components/DetectButton";
+import { detectVideo } from "../../services/detect";
 
 const DetectPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [model, setModel] = useState<string>("YOLO-Fake");
   const [threshold, setThreshold] = useState<number>(0.7);
   const [interval, setInterval] = useState<number>(1);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
-  const handleDetect = async () => {
-    if (!file) {
-      toast.error("请先上传视频");
-      return;
-    }
-    setLoading(true);
-    const id = toast.loading("正在检测...");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    toast.success("检测完成", { id });
-    setLoading(false);
-    navigate("/result?id=123");
-  };
 
   return (
     <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
@@ -46,10 +32,10 @@ const DetectPage: React.FC = () => {
             onThresholdChange={setThreshold}
             interval={interval}
             onIntervalChange={setInterval}
+            defaultModel="YOLO-Fake"
           />
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 text-center">
-          <DetectButton onClick={handleDetect} />
+
         </div>
       </main>
     </div>
