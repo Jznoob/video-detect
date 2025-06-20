@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import UploadZone from "./components/UploadZone";
 import DetectParams from "./components/DetectParams";
 import DetectButton from "./components/DetectButton";
@@ -10,28 +9,22 @@ const DetectPage: React.FC = () => {
   const [model, setModel] = useState<string>("YOLO-Fake");
   const [threshold, setThreshold] = useState<number>(0.7);
   const [interval, setInterval] = useState<number>(1);
-  const navigate = useNavigate();
 
-  const handleDetect = async () => {
-    if (!file) {
-      toast.error("请先上传视频");
-      return;
-    }
-    const loadingId = toast.loading("正在检测...");
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    const taskId = Date.now().toString();
-    toast.dismiss(loadingId);
-    navigate(`/result?id=${taskId}`);
-  };
+
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-[#181A20] text-gray-900 dark:text-white">
+    <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
       <Toaster position="top-right" />
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-50">
+          <div className="w-40 h-40 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />
+        </div>
+      )}
       <main className="max-w-4xl mx-auto py-8 px-4 space-y-6">
-        <div className="bg-white dark:bg-[#232B55] rounded-xl shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
           <UploadZone onFileChange={setFile} />
         </div>
-        <div className="bg-white dark:bg-[#232B55] rounded-xl shadow p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
           <DetectParams
             model={model}
             onModelChange={setModel}
@@ -39,10 +32,10 @@ const DetectPage: React.FC = () => {
             onThresholdChange={setThreshold}
             interval={interval}
             onIntervalChange={setInterval}
+            defaultModel="YOLO-Fake"
           />
         </div>
-        <div className="bg-white dark:bg-[#232B55] rounded-xl shadow p-6 text-center">
-          <DetectButton onClick={handleDetect} />
+
         </div>
       </main>
     </div>
