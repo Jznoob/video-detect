@@ -17,10 +17,11 @@ const DetectPage: React.FC = () => {
       toast.error("请先上传视频");
       return;
     }
-    const id = toast.loading("正在检测...");
+    const loadingId = toast.loading("正在检测...");
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    toast.success("检测完成", { id });
-    navigate("/result?id=123");
+    const taskId = Date.now().toString();
+    toast.dismiss(loadingId);
+    navigate(`/result?id=${taskId}`);
   };
 
   return (
