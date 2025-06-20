@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export interface UploadZoneProps {
@@ -14,6 +14,7 @@ const allowedTypes = [
 
 const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = (files: FileList | null) => {
@@ -28,6 +29,15 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
     setFile(f);
     onFileChange?.(f);
   };
+
+  useEffect(() => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+    setPreviewUrl(null);
+  }, [file]);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -51,9 +61,18 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
         onChange={(e) => handleFiles(e.target.files)}
       />
       {file ? (
-        <p className="text-gray-800 dark:text-gray-100">
-          {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
-        </p>
+        <div className="space-y-2">
+          {previewUrl && (
+            <video
+              src={previewUrl}
+              controls
+              className="max-h-64 mx-auto w-full rounded"
+            />
+          )}
+          <p className="text-gray-800 dark:text-gray-100">
+            {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+          </p>
+        </div>
       ) : (
         <p className="text-gray-500 dark:text-gray-400">拖拽或点击上传视频</p>
       )}
