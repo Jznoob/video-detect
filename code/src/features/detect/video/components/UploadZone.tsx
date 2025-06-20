@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export interface UploadZoneProps {
@@ -14,7 +14,17 @@ const allowedTypes = [
 
 const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
   const [file, setFile] = useState<File | null>(null);
+  const [videoUrl, setVideoUrl] = useState<string>("");
+  const [duration, setDuration] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // revoke object url when file changed
+  useEffect(() => {
+    return () => {
+      if (videoUrl) URL.revokeObjectURL(videoUrl);
+    };
+  }, [videoUrl]);
 
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -25,7 +35,14 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
       toast.error("只支持 MP4/MKV/AVI 格式");
       return;
     }
+    if (f.size > 100 * 1024 * 1024) {
+      toast.error("文件大小不可超过 100MB");
+      return;
+    }
+    const url = URL.createObjectURL(f);
     setFile(f);
+    setVideoUrl(url);
+    setDuration(0);
     onFileChange?.(f);
   };
 
@@ -51,9 +68,22 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange }) => {
         onChange={(e) => handleFiles(e.target.files)}
       />
       {file ? (
-        <p className="text-gray-800 dark:text-gray-100">
-          {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
-        </p>
+        <>
+          <video
+            ref={videoRef}
+            src={videoUrl}
+            controls
+            className="mx-auto mb-2 max-h-64"
+            onLoadedMetadata={() =>
+              setDuration(videoRef.current?.duration ?? 0)
+            }
+          />
+          <p className="text-gray-800 dark:text-gray-100">
+            {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB,
+            {" "}
+            {duration.toFixed(2)}s)
+          </p>
+        </>
       ) : (
         <p className="text-gray-500 dark:text-gray-400">拖拽或点击上传视频</p>
       )}
