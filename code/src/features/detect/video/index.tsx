@@ -12,6 +12,7 @@ const DetectPage: React.FC = () => {
   const [interval, setInterval] = useState<number>(1);
 
 
+
   return (
     <div className="relative min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
       <Toaster position="top-right" />
