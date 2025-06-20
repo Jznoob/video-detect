@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const navs = [
   { label: "首页", path: "/" },
-  { label: "视频检测", path: "/detect/video" },
+  { label: "视频检测", path: "/video-detect" },
   { label: "设置", path: "/settings" },
 ];
 

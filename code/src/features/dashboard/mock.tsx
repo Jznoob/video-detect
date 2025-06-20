@@ -23,7 +23,7 @@ const mockStats = [
     value: 8,
     iconBg: "bg-blue-100 dark:bg-blue-700",
     icon: <Video className="w-6 h-6 text-blue-600 dark:text-blue-200" />,
-    to: "/detect/video", // 示例路径
+    to: "/video-detect", // 示例路径
   },
 ];
 
