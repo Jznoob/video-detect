@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./components/Navbar";
+import Navbar from "../../components/Navbar";
 import StatCard from "./components/StatCard";
 import RecentTaskTable from "./components/RecentTaskTable";
 import { getStats, getRecentTasks } from "./mock";

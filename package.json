@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@headlessui/react": "^2.2.4",
+    "@types/react-resizable": "^3.0.8",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.18.1",
+    "react-draggable": "^4.4.6",
+    "react-resizable": "^3.0.5",
+    "react-rnd": "^10.5.2"
+  }
+}
