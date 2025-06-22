@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const navs = [
   { label: "首页", path: "/" },
   { label: "检测", path: "/video-detect" },
+  { label: "历史记录", path: "/history" },
   { label: "设置", path: "/settings" },
 ];
 
@@ -16,6 +17,9 @@ const Navbar: React.FC = () => {
     document.documentElement.classList.toggle("dark");
     setDark(document.documentElement.classList.contains("dark"));
   };
+
+  // 检查当前路径是否为历史记录相关页面
+  const isHistoryPage = location.pathname.startsWith("/history");
 
   return (
     <nav className="h-16 w-full bg-white dark:bg-gray-900 shadow-sm border-b border-gray-100 dark:border-gray-800">
@@ -31,7 +35,7 @@ const Navbar: React.FC = () => {
               key={nav.path}
               onClick={() => navigate(nav.path)}
               className={`px-3 py-1.5 rounded text-sm font-medium transition-colors
-                ${location.pathname === nav.path
+                ${(location.pathname === nav.path || (nav.path === "/history" && isHistoryPage))
                   ? "bg-[#232B55] text-white dark:bg-gray-700 dark:text-white"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"}
               `}

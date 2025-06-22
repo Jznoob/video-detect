@@ -26,8 +26,8 @@ const barData = [
 
 // 饼图 mock 数据
 const pieData = [
-  { name: "成功", value: 72 },
-  { name: "失败", value: 28 },
+  { name: "成功", value: 72, count: 72 },
+  { name: "失败", value: 28, count: 28 },
 ];
 const COLORS = [
   "#3B82F6", // 亮色蓝
@@ -37,6 +37,29 @@ const DARK_COLORS = [
   "#60A5FA", // 暗色蓝
   "#818CF8", // 暗色紫蓝
 ];
+
+// 自定义饼图 Tooltip
+const CustomPieTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    const percentage = ((data.value / (data.value + (data.name === "成功" ? 28 : 72))) * 100).toFixed(1);
+    
+    return (
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium text-gray-900 dark:text-white">
+          {data.name}
+        </p>
+        <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+          {data.count} 次
+        </p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          {percentage}%
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 const HistoryChart: React.FC<{ className?: string }> = ({ className = "" }) => {
   // 主题适配
@@ -86,6 +109,7 @@ const HistoryChart: React.FC<{ className?: string }> = ({ className = "" }) => {
                 style={{ whiteSpace: 'pre-line', fontWeight: 600 }}
               />
             </Pie>
+            <Tooltip content={<CustomPieTooltip />} />
             <Legend
               verticalAlign="bottom"
               align="center"

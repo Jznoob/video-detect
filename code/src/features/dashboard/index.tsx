@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import StatCard from "./components/StatCard";
 import RecentTaskTable from "./components/RecentTaskTable";
-import { getStats, getRecentTasks } from "./mock";
+import { getStats } from "./mock";
 import { toast } from "sonner";
 import HistoryChart from "./components/HistoryChart";
 
@@ -13,16 +13,8 @@ type Stat = {
   icon: React.ReactNode;
 };
 
-type RecentTask = {
-  filename: string;
-  type: string;
-  status: string;
-  time: string;
-};
-
 const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<Stat[]>([]);
-  const [recentTasks, setRecentTasks] = useState<RecentTask[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -31,9 +23,7 @@ const Dashboard: React.FC = () => {
     const fetchData = async () => {
       setIsLoading(true);
       const s = await getStats();
-      const r = await getRecentTasks();
       setStats(s);
-      setRecentTasks(r);
       setIsLoading(false);
     };
     fetchData();
@@ -78,7 +68,7 @@ const Dashboard: React.FC = () => {
               ))}
             </div>
           ) : (
-            <RecentTaskTable tasks={recentTasks} />
+            <RecentTaskTable />
           )}
         </section>
 
@@ -92,6 +82,5 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
 
 export default Dashboard;
