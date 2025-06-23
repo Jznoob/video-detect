@@ -56,8 +56,8 @@ const ResultControlPanel: React.FC<ResultControlPanelProps> = ({
   setPlayForgedOnly
 }) => {
   return (
-    <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl shadow p-6 space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2 mb-4">控制面板</h3>
+    <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl shadow p-8 space-y-6">
+      <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3 mb-5">控制面板</h3>
       
       {setShowHeatmap && (
         <CustomSwitch checked={showHeatmap} onChange={setShowHeatmap} label={texts.showHeatmap} />
@@ -86,6 +86,7 @@ const ResultControlPanel: React.FC<ResultControlPanelProps> = ({
           />
         </div>
       )}
+
     </div>
   );
 };

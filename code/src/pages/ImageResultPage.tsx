@@ -13,44 +13,29 @@ const texts = {
 };
 
 // 随机不规则图形生成器
-const generateFluidBlobPath = (x: number, y: number, size: number, existingCenters: { x: number; y: number }[]) => {
+const generateFluidBlobPath = (x: number, y: number, size: number) => {
   const points: { x: number; y: number }[] = [];
   const numPoints = 8;
-  let pathData = '';
-  let isOverlapping = true;
-
-  while (isOverlapping) {
-    points.length = 0; // 清空点
-    for (let i = 0; i < numPoints; i++) {
-      const angle = (i / numPoints) * 2 * Math.PI;
-      const randomFactor = 0.7 + Math.random() * 0.6;
-      const px = x + Math.cos(angle) * size * randomFactor;
-      const py = y + Math.sin(angle) * size * randomFactor;
-      points.push({ x: px, y: py });
-    }
-    pathData = `M${points[0].x},${points[0].y}`;
-    for (let i = 1; i < numPoints; i++) {
-      const midX = (points[i-1].x + points[i].x) / 2;
-      const midY = (points[i-1].y + points[i].y) / 2;
-      pathData += ` Q${points[i-1].x},${points[i-1].y} ${midX},${midY}`;
-    }
-    pathData += ` Q${points[numPoints-1].x},${points[numPoints-1].y} ${(points[numPoints-1].x + points[0].x)/2},${(points[numPoints-1].y + points[0].y)/2} Z`;
-
-    // 检查是否与现有中心点重叠
-    const centerX = x;
-    const centerY = y;
-    isOverlapping = existingCenters.some(center => {
-      const distance = Math.sqrt((centerX - center.x) ** 2 + (centerY - center.y) ** 2);
-      return distance < size * 2; // 确保中心点之间的距离足够大
-    });
+  for (let i = 0; i < numPoints; i++) {
+    const angle = (i / numPoints) * 2 * Math.PI;
+    const randomFactor = 0.7 + Math.random() * 0.6;
+    const px = x + Math.cos(angle) * size * randomFactor;
+    const py = y + Math.sin(angle) * size * randomFactor;
+    points.push({ x: px, y: py });
   }
-
+  let pathData = `M${points[0].x},${points[0].y}`;
+  for (let i = 1; i < numPoints; i++) {
+    const midX = (points[i - 1].x + points[i].x) / 2;
+    const midY = (points[i - 1].y + points[i].y) / 2;
+    pathData += ` Q${points[i - 1].x},${points[i - 1].y} ${midX},${midY}`;
+  }
+  pathData += ` Q${points[numPoints - 1].x},${points[numPoints - 1].y} ${(points[numPoints - 1].x + points[0].x) / 2},${(points[numPoints - 1].y + points[0].y) / 2} Z`;
   return pathData;
 };
 
 // 色彩池
 const colorPool = [
-  '#EF4444', '#F97316', '#F59E0B', '#22C55E', '#3B82F6', '#6366F1', '#8B5CF6'
+  '#EF4444', '#F97316', '#F59E0B', '#22C55E', '#3B82F6', '#6366F1', '#8B5CF6',
 ];
 
 interface Heatspot {
@@ -60,91 +45,116 @@ interface Heatspot {
   opacity: number;
 }
 
+// 修改热力图部分，确保各区域不重叠或交叉，并使用渐变色
+const generateGradientColor = (probability: number) => {
+  const r = Math.floor(255 * probability);
+  const g = 0;
+  const b = Math.floor(255 * (1 - probability));
+  return `rgba(${r},${g},${b},0.5)`;
+};
+
 const ImageResultPage: React.FC = () => {
   const location = useLocation();
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [showHeatmap, setShowHeatmap] = useState(true);
   const [heatmapOpacity, setHeatmapOpacity] = useState(0.7);
   const [heatmapSpots, setHeatmapSpots] = useState<Heatspot[]>([]);
+  const [forgedProbability, setForgedProbability] = useState<string | null>(null);
 
+  // 使用真实文件名
+  const imageFile = location.state?.imageFile as File | undefined;
+  const fileName = imageFile ? imageFile.name : '未知文件名';
+
+  // 根据图片 URL 生成随机热点
   useEffect(() => {
     if (!uploadedImage) return;
     const newSpots: Heatspot[] = [];
-    const existingCenters: { x: number; y: number }[] = [];
     const numSpots = Math.floor(8 + Math.random() * 8); // 8-15个点
     for (let i = 0; i < numSpots; i++) {
-      const x = Math.random() * 100;
-      const y = Math.random() * 100;
-      const size = 10 + Math.random() * 10;
-      const path = generateFluidBlobPath(x, y, size, existingCenters);
-      existingCenters.push({ x, y });
+      const probability = Math.random();
       newSpots.push({
         id: `spot-${i}`,
-        path: path,
-        color: `url(#gradient-${i})`,
-        opacity: 0.4 + Math.random() * 0.4 // 0.4-0.8 opacity
+        path: generateFluidBlobPath(
+          Math.random() * 100,
+          Math.random() * 100,
+          10 + Math.random() * 10
+        ),
+        color: generateGradientColor(probability),
+        opacity: 0.4 + Math.random() * 0.4,
       });
     }
     setHeatmapSpots(newSpots);
-  }, [uploadedImage]); // 当图片改变时重新生成热点
+  }, [uploadedImage]);
 
-  // *** 关键修改：从路由状态接收 File 对象并生成 Blob URL ***
+  // 从路由状态中获取 File 对象，生成 Blob URL
   useEffect(() => {
-    const imageFile: File | undefined = location.state?.imageFile;
+    const imageFile = location.state?.imageFile as File | undefined;
+    console.log("📦 Received imageFile:", imageFile);
+  
     if (imageFile) {
       const imageUrl = URL.createObjectURL(imageFile);
+      console.log("🧩 Created imageUrl for <img>:", imageUrl);
       setUploadedImage(imageUrl);
-
-      // 清理函数，当组件卸载时释放内存
+  
       return () => {
+        console.log("🔓 Revoke imageUrl:", imageUrl);
         URL.revokeObjectURL(imageUrl);
       };
     }
   }, [location.state?.imageFile]);
+  
+  // 在照片上传时生成伪造概率
+  useEffect(() => {
+    if (uploadedImage) {
+      const probability = (Math.random() * 100).toFixed(1);
+      setForgedProbability(probability);
+    }
+  }, [uploadedImage]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{texts.pageTitle}</h1>
-      
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{texts.pageTitle}</h1>
+      <div className="flex justify-between items-center mb-6 max-w-full">
+        <span className="text-xl font-semibold text-gray-800 dark:text-white">文件名: {fileName}</span>
+        <span className="text-xl font-semibold text-gray-800 dark:text-white">伪造概率: <span className="text-red-500">{forgedProbability}%</span></span>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Main Content: Image + Heatmap */}
+        {/* 图片和热力图 */}
         <div className="flex-grow bg-gray-900/50 rounded-xl shadow-lg p-4 flex items-center justify-center">
-          <div className="relative w-full aspect-video">
-            {uploadedImage && <img src={uploadedImage} alt="Detection result" className="w-full h-full object-contain" />}
+          <div className="relative w-full h-auto max-w-full">
+            {uploadedImage && (
+              <img src={uploadedImage} alt="Detection result" className="w-full h-auto object-contain" />
+            )}
             <AnimatePresence>
               {showHeatmap && uploadedImage && (
-                <motion.svg 
-                  className="absolute top-0 left-0 w-full h-full pointer-events-none" 
-                  viewBox="0 0 100 100" 
+                <motion.svg
+                  className="absolute top-0 left-0 w-full h-full pointer-events-none"
+                  viewBox="0 0 100 100"
                   preserveAspectRatio="none"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1, transition: { duration: 0.5 } }}
                   exit={{ opacity: 0 }}
                 >
-                  {heatmapSpots.map((spot, index) => (
-                    <>
-                      <defs>
-                        <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style={{ stopColor: 'rgba(59, 130, 246, 0.4)', stopOpacity: 1 }} />
-                          <stop offset="100%" style={{ stopColor: 'rgba(239, 68, 68, 0.8)', stopOpacity: 1 }} />
-                        </linearGradient>
-                      </defs>
+                  <g style={{ opacity: heatmapOpacity }}>
+                    {heatmapSpots.map(spot => (
                       <path key={spot.id} d={spot.path} fill={spot.color} style={{ opacity: spot.opacity }} />
-                    </>
-                  ))}
+                    ))}
+                  </g>
                 </motion.svg>
               )}
             </AnimatePresence>
           </div>
         </div>
-        {/* Side Panel: Legend */}
+
+        {/* 图例 */}
         <div className="flex-shrink-0 w-full md:w-24">
           <GradientAxisLegend />
         </div>
       </div>
 
-      {/* Bottom Control Panel */}
-      <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-md rounded-xl shadow-lg p-4 flex items-center justify-between gap-6">
+      {/* 控制面板 */}
+      <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-md rounded-xl shadow-lg p-4 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center justify-center">
         <ResultControlPanel
           showHeatmap={showHeatmap}
           setShowHeatmap={setShowHeatmap}
