@@ -1,32 +1,36 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Box } from 'lucide-react';
+import { useLocation, useNavigate } from "react-router-dom";
 
 const navs = [
-  { label: "首页", path: "/" },
+  { label: "首页", path: "/dashboard" },
   { label: "检测", path: "/video-detect" },
   { label: "历史记录", path: "/history" },
   { label: "设置", path: "/settings" },
 ];
 
 const Navbar: React.FC = () => {
+  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
   const navigate = useNavigate();
   const location = useLocation();
-  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
 
   const toggleTheme = () => {
     document.documentElement.classList.toggle("dark");
     setDark(document.documentElement.classList.contains("dark"));
   };
 
-  // 检查当前路径是否为历史记录相关页面
   const isHistoryPage = location.pathname.startsWith("/history");
 
+
   return (
-    <nav className="h-16 w-full bg-white dark:bg-gray-900 shadow-sm border-b border-gray-100 dark:border-gray-800">
-      <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4">
+    <nav className="fixed top-0 left-0 right-0 h-16 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm border-b border-gray-100 dark:border-gray-800 z-50">
+      <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo/系统名 */}
-        <div className="text-xl font-bold text-[#232B55] dark:text-white tracking-wide select-none">
-          多媒体篡改检测系统
+        <div className="flex items-center gap-3">
+          <Box className="w-7 h-7 text-blue-600 dark:text-blue-500" />
+          <div className="text-xl font-bold text-gray-800 dark:text-white tracking-wider select-none">
+            LUXTRACE
+          </div>
         </div>
         {/* 右侧导航 */}
         <div className="flex items-center gap-2 md:gap-4">
@@ -36,7 +40,7 @@ const Navbar: React.FC = () => {
               onClick={() => navigate(nav.path)}
               className={`px-3 py-1.5 rounded text-sm font-medium transition-colors
                 ${(location.pathname === nav.path || (nav.path === "/history" && isHistoryPage))
-                  ? "bg-[#232B55] text-white dark:bg-gray-700 dark:text-white"
+                  ? "bg-blue-600 text-white dark:bg-blue-700 dark:text-white"
                   : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"}
               `}
             >

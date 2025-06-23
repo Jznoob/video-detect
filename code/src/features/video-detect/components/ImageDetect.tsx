@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { Rnd } from "react-rnd";
+import { useNavigate } from "react-router-dom";
 
 export interface ImageDetectProps {
   onFileChange: (file: File | null) => void;
@@ -52,6 +53,7 @@ const ImageDetect: React.FC<ImageDetectProps> = ({
   const [selectionBoxes, setSelectionBoxes] = useState<SelectionBox[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const imageContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!file) {
@@ -66,6 +68,7 @@ const ImageDetect: React.FC<ImageDetectProps> = ({
 
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
+    console.log('Generated previewUrl:', url);
 
     return () => {
       if (url) URL.revokeObjectURL(url);
@@ -145,6 +148,16 @@ const ImageDetect: React.FC<ImageDetectProps> = ({
       selectionBoxes.map(box => box.id === id ? { ...box, ...updates } : box)
     );
   };
+
+  const handleDetectClick = () => {
+    if (file) {
+      console.log('Navigating with file:', file); // 调试信息
+      navigate("/result", { state: { imageFile: file } });
+    } else {
+      toast.error("请先上传图片！");
+    }
+  };
+  
 
   return (
     <div className="space-y-6">

@@ -1,0 +1,36 @@
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { avgDetectionTimeData } from '../mock';
+
+const AvgDetectionTimeChart: React.FC = () => {
+  return (
+    <div style={{ width: '100%', height: 300 }}>
+      <ResponsiveContainer>
+        <BarChart
+          data={avgDetectionTimeData}
+          margin={{
+            top: 5, right: 30, left: 20, bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(128, 128, 128, 0.2)" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip
+            cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }}
+            contentStyle={{
+              background: 'rgba(30, 41, 59, 0.8)',
+              border: '1px solid #475569',
+              borderRadius: '8px',
+              color: '#f8fafc'
+            }}
+          />
+          <Legend />
+          <Bar dataKey="图片(ms)" fill="#8b5cf6" />
+          <Bar dataKey="视频(ms)" fill="#3b82f6" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default AvgDetectionTimeChart; 

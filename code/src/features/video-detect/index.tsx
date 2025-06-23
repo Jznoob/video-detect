@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
 import { Tab } from "@headlessui/react";
-import Navbar from "../../components/Navbar";
 import UploadZone from "./components/UploadZone";
 import ImageDetect from "./components/ImageDetect";
 import HistoryPanel from "./components/HistoryPanel";
@@ -146,145 +145,143 @@ const DetectPage: React.FC = () => {
         model: imageModel,
         threshold: imageThreshold,
         enhance: imageEnhance,
+        imageFile: imageFile,
       };
       
-      navigate("/result", { state: detectData });
+      const targetPath = activeTab === 0 ? "/video-result" : "/image-result";
+      navigate(targetPath, { state: detectData });
     }, 2000);
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f8fa] dark:bg-[#181A20] text-gray-900 dark:text-white">
+    <main className="max-w-7xl mx-auto px-4 py-6">
       <Toaster position="top-right" />
-      <Navbar />
-      
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* 左侧主功能区 */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Tab 切换 */}
-            <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6">
-              <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
-                <Tab.List className="flex gap-6 border-b border-gray-200 dark:border-gray-700 mb-6">
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        "px-2 pb-2 text-sm font-semibold border-b-2 transition focus:outline-none",
-                        selected
-                          ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
-                          : "border-transparent text-gray-500 dark:text-gray-400 hover:text-indigo-600"
-                      )
-                    }
-                  >
-                    视频检测
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      clsx(
-                        "px-2 pb-2 text-sm font-semibold border-b-2 transition focus:outline-none",
-                        selected
-                          ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
-                          : "border-transparent text-gray-500 dark:text-gray-400 hover:text-indigo-600"
-                      )
-                    }
-                  >
-                    照片检测
-                  </Tab>
-                </Tab.List>
-                
-                <Tab.Panels>
-                  {/* 视频检测面板 */}
-                  <Tab.Panel>
-                    <div className="space-y-6">
-                      <UploadZone
-                        file={videoFile}
-                        onFileChange={handleVideoFileChange}
-                        onDelete={handleVideoDelete}
-                      />
-                      {videoFile && videoMeta && (
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                          <span>文件名：{videoMeta.name}</span>
-                          <span className="hidden sm:inline mx-2">|</span>
-                          <span>时长：{videoMeta.duration ? videoMeta.duration.toFixed(2) + " 秒" : "-"}</span>
-                        </div>
-                      )}
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-sm font-medium mb-1">检测模型</label>
-                          <select
-                            value={videoModel}
-                            onChange={e => setVideoModel(e.target.value)}
-                            className="w-full rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
-                          >
-                            {VIDEO_MODELS.map(m => (
-                              <option key={m} value={m}>{m}</option>
-                            ))}
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium mb-1">检测阈值</label>
-                          <input
-                            type="range"
-                            min={0.5}
-                            max={1}
-                            step={0.01}
-                            value={videoThreshold}
-                            onChange={e => setVideoThreshold(Number(e.target.value))}
-                            className="w-full accent-indigo-600"
-                          />
-                          <input
-                            type="number"
-                            min={0.5}
-                            max={1}
-                            step={0.01}
-                            value={videoThreshold}
-                            onChange={e => setVideoThreshold(Number(e.target.value))}
-                            className="w-full mt-1 rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700 text-center"
-                          />
-                        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* 左侧主功能区 */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Tab 切换 */}
+          <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6">
+            <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
+              <Tab.List className="flex gap-6 border-b border-gray-200 dark:border-gray-700 mb-6">
+                <Tab
+                  className={({ selected }) =>
+                    clsx(
+                      "px-2 pb-2 text-sm font-semibold border-b-2 transition focus:outline-none",
+                      selected
+                        ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                        : "border-transparent text-gray-500 dark:text-gray-400 hover:text-indigo-600"
+                    )
+                  }
+                >
+                  视频检测
+                </Tab>
+                <Tab
+                  className={({ selected }) =>
+                    clsx(
+                      "px-2 pb-2 text-sm font-semibold border-b-2 transition focus:outline-none",
+                      selected
+                        ? "border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                        : "border-transparent text-gray-500 dark:text-gray-400 hover:text-indigo-600"
+                    )
+                  }
+                >
+                  照片检测
+                </Tab>
+              </Tab.List>
+              
+              <Tab.Panels>
+                {/* 视频检测面板 */}
+                <Tab.Panel>
+                  <div className="space-y-6">
+                    <UploadZone
+                      file={videoFile}
+                      onFileChange={handleVideoFileChange}
+                      onDelete={handleVideoDelete}
+                    />
+                    {videoFile && videoMeta && (
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                        <span>文件名：{videoMeta.name}</span>
+                        <span className="hidden sm:inline mx-2">|</span>
+                        <span>时长：{videoMeta.duration ? videoMeta.duration.toFixed(2) + " 秒" : "-"}</span>
+                      </div>
+                    )}
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">检测模型</label>
+                        <select
+                          value={videoModel}
+                          onChange={e => setVideoModel(e.target.value)}
+                          className="w-full rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
+                        >
+                          {VIDEO_MODELS.map(m => (
+                            <option key={m} value={m}>{m}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">检测阈值</label>
+                        <input
+                          type="range"
+                          min={0.5}
+                          max={1}
+                          step={0.01}
+                          value={videoThreshold}
+                          onChange={e => setVideoThreshold(Number(e.target.value))}
+                          className="w-full accent-indigo-600"
+                        />
+                        <input
+                          type="number"
+                          min={0.5}
+                          max={1}
+                          step={0.01}
+                          value={videoThreshold}
+                          onChange={e => setVideoThreshold(Number(e.target.value))}
+                          className="w-full mt-1 rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700 text-center"
+                        />
                       </div>
                     </div>
-                  </Tab.Panel>
-                  
-                  {/* 照片检测面板 */}
-                  <Tab.Panel>
-                    <ImageDetect
-                      file={imageFile}
-                      onFileChange={handleImageFileChange}
-                      onDelete={handleImageDelete}
-                      model={imageModel}
-                      threshold={imageThreshold}
-                      enhance={imageEnhance}
-                      onModelChange={setImageModel}
-                      onThresholdChange={setImageThreshold}
-                      onEnhanceChange={setImageEnhance}
-                    />
-                  </Tab.Panel>
-                </Tab.Panels>
-              </Tab.Group>
-            </div>
-            
-            {/* 检测按钮 */}
-            <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6">
-              <button
-                className="w-full py-3 rounded-lg bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition disabled:opacity-50"
-                disabled={loading || (activeTab === 0 ? !videoFile : !imageFile)}
-                onClick={handleDetect}
-              >
-                {loading ? "检测中..." : "开始检测"}
-              </button>
-            </div>
+                  </div>
+                </Tab.Panel>
+                
+                {/* 照片检测面板 */}
+                <Tab.Panel>
+                  <ImageDetect
+                    file={imageFile}
+                    onFileChange={handleImageFileChange}
+                    onDelete={handleImageDelete}
+                    model={imageModel}
+                    threshold={imageThreshold}
+                    enhance={imageEnhance}
+                    onModelChange={setImageModel}
+                    onThresholdChange={setImageThreshold}
+                    onEnhanceChange={setImageEnhance}
+                  />
+                </Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
           </div>
           
-          {/* 右侧历史记录区 */}
-          <div className="lg:col-span-1">
-            <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6 h-[600px]">
-              <HistoryPanel />
-            </div>
+          {/* 检测按钮 */}
+          <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6">
+            <button
+              className="w-full py-3 rounded-lg bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition disabled:opacity-50"
+              disabled={loading || (activeTab === 0 ? !videoFile : !imageFile)}
+              onClick={handleDetect}
+            >
+              {loading ? "检测中..." : "开始检测"}
+            </button>
           </div>
         </div>
-      </main>
-    </div>
+        
+        {/* 右侧历史记录区 */}
+        <div className="lg:col-span-1">
+          <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6 h-[600px]">
+            <HistoryPanel />
+          </div>
+        </div>
+      </div>
+    </main>
   );
 };
 

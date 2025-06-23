@@ -27,6 +27,47 @@ const mockStats = [
   },
 ];
 
+// 检测类型占比 - 环形图
+export const detectionTypeData = [
+  { name: '视频检测', value: 400, fill: '#3b82f6' },
+  { name: '图片检测', value: 300, fill: '#8b5cf6' },
+];
+
+// 平均检测时长 (ms) - 柱状图
+export const avgDetectionTimeData = [
+  { name: 'Day 1', '图片(ms)': 120, '视频(ms)': 200 },
+  { name: 'Day 2', '图片(ms)': 150, '视频(ms)': 230 },
+  { name: 'Day 3', '图片(ms)': 100, '视频(ms)': 180 },
+  { name: 'Day 4', '图片(ms)': 180, '视频(ms)': 280 },
+  { name: 'Day 5', '图片(ms)': 130, '视频(ms)': 210 },
+  { name: 'Day 6', '图片(ms)': 160, '视频(ms)': 250 },
+  { name: 'Day 7', '图片(ms)': 140, '视频(ms)': 220 },
+];
+
+// 模型使用频率 - 条形图
+export const modelUsageData = [
+    { name: 'EfficientNet-B7', usage: 120, fill: '#22c55e' },
+    { name: 'ResNet-50', usage: 98, fill: '#14b8a6' },
+    { name: 'Vision Transformer', usage: 75, fill: '#0ea5e9' },
+    { name: 'MobileNetV2', usage: 50, fill: '#6366f1' },
+    { name: 'InceptionV3', usage: 32, fill: '#8b5cf6' },
+];
+
+// 活跃度热图 - 7天 x 24小时
+const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const hours = Array.from({ length: 24 }, (_, i) => `${i}`);
+const heatmapData = new Array(7).fill(0).map(() => 
+  new Array(24).fill(0).map(() => Math.floor(Math.random() * 50) + 10)
+);
+
+export const getActivityHeatmapData = () => {
+    return {
+        xLabels: hours,
+        yLabels: days,
+        data: heatmapData
+    }
+}
+
 // const USE_MOCK = process.env.USE_MOCK === 'true';
 
 export const getStats = async () => {
