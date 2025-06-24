@@ -6,7 +6,6 @@ const navs = [
   { label: "首页", path: "/dashboard" },
   { label: "检测", path: "/video-detect" },
   { label: "历史记录", path: "/history" },
-  { label: "设置", path: "/settings" },
 ];
 
 const Navbar: React.FC = () => {

@@ -4,6 +4,7 @@ import { Sparkles, SlidersHorizontal, Download, Image as ImageIcon } from 'lucid
 import { motion, AnimatePresence } from 'framer-motion';
 import ResultControlPanel from '../components/ResultPage/ResultControlPanel';
 import GradientAxisLegend from '../components/ResultPage/GradientAxisLegend';
+import DetectionReport from '../components/ResultPage/DetectionReport';
 
 // 本地化文本
 const texts = {
@@ -43,6 +44,8 @@ interface Heatspot {
   path: string;
   color: string;
   opacity: number;
+  position?: string;
+  spotProbability: number;
 }
 
 // 修改热力图部分，确保各区域不重叠或交叉，并使用渐变色
@@ -60,10 +63,16 @@ const ImageResultPage: React.FC = () => {
   const [heatmapOpacity, setHeatmapOpacity] = useState(0.7);
   const [heatmapSpots, setHeatmapSpots] = useState<Heatspot[]>([]);
   const [forgedProbability, setForgedProbability] = useState<string | null>(null);
+  const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(null);
 
   // 使用真实文件名
   const imageFile = location.state?.imageFile as File | undefined;
   const fileName = imageFile ? imageFile.name : '未知文件名';
+
+  // 从 location.state 中获取图像信息
+  const detectionModel = location.state?.model || '未知模型';
+  const detectionThreshold = location.state?.threshold || 0.7;
+  const enhancementEnabled = location.state?.enhancementEnabled || false;
 
   // 根据图片 URL 生成随机热点
   useEffect(() => {
@@ -81,6 +90,7 @@ const ImageResultPage: React.FC = () => {
         ),
         color: generateGradientColor(probability),
         opacity: 0.4 + Math.random() * 0.4,
+        spotProbability: probability,
       });
     }
     setHeatmapSpots(newSpots);
@@ -103,28 +113,81 @@ const ImageResultPage: React.FC = () => {
     }
   }, [location.state?.imageFile]);
   
-  // 在照片上传时生成伪造概率
+  // 生成伪造概率
   useEffect(() => {
     if (uploadedImage) {
-      const probability = (Math.random() * 100).toFixed(1);
+      const probability = (Math.random()).toFixed(2);
       setForgedProbability(probability);
     }
   }, [uploadedImage]);
+
+  // 更新区域分布逻辑，控制概率范围在页面顶部伪造概率的上下10%范围内
+  useEffect(() => {
+    if (forgedProbability) {
+      const probability = parseFloat(forgedProbability);
+      const numSpots = probability > 0.8 ? Math.floor(6 + Math.random() * 3) :
+                       probability > 0.5 ? Math.floor(3 + Math.random() * 3) :
+                       Math.floor(1 + Math.random() * 2);
+      const newSpots: Heatspot[] = [];
+      const positions = ['左上角', '右上角', '右下角', '左下角', '中心'];
+      for (let i = 0; i < numSpots; i++) {
+        const spotProbability = Math.random() * (Math.min(1, probability + 0.1) - Math.max(0, probability - 0.1)) + Math.max(0, probability - 0.1);
+        newSpots.push({
+          id: `spot-${i}`,
+          path: generateFluidBlobPath(
+            Math.random() * 100,
+            Math.random() * 100,
+            10 + Math.random() * 10
+          ),
+          color: generateGradientColor(spotProbability),
+          opacity: 0.4 + Math.random() * 0.4,
+          position: positions[i % positions.length],
+          spotProbability: spotProbability,
+        });
+      }
+      setHeatmapSpots(newSpots);
+    }
+  }, [forgedProbability]);
+
+  // 在 useEffect 中获取图像的实际尺寸
+  useEffect(() => {
+    const img = new Image();
+    img.src = uploadedImage || '';
+    img.onload = () => {
+      const width = img.width;
+      const height = img.height;
+      setImageDimensions({ width, height });
+    };
+  }, [uploadedImage]);
+
+  // 获取当前时间
+  const detectionTime = new Date().toLocaleString();
+
+  // 修复伪造概率判断逻辑
+  const getForgeryConclusion = (probability: number) => {
+    if (probability > 0.8) {
+      return { text: '明显存在伪造', color: 'text-red-600' };
+    } else if (probability > 0.5) {
+      return { text: '疑似存在伪造', color: 'text-yellow-600' };
+    } else {
+      return { text: '未检测到明显伪造', color: 'text-green-600' };
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">{texts.pageTitle}</h1>
       <div className="flex justify-between items-center mb-6 max-w-full">
         <span className="text-xl font-semibold text-gray-800 dark:text-white">文件名: {fileName}</span>
-        <span className="text-xl font-semibold text-gray-800 dark:text-white">伪造概率: <span className="text-red-500">{forgedProbability}%</span></span>
+        <span className="text-xl font-semibold text-gray-800 dark:text-white">伪造概率: <span className="text-red-500">{forgedProbability ? (parseFloat(forgedProbability) * 100).toFixed(2) : '0.00'}%</span></span>
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* 图片和热力图 */}
         <div className="flex-grow bg-gray-900/50 rounded-xl shadow-lg p-4 flex items-center justify-center">
-          <div className="relative w-full h-auto max-w-full">
+          <div className="relative w-full" style={{ aspectRatio: imageDimensions ? `${imageDimensions.width} / ${imageDimensions.height}` : '16 / 9' }}>
             {uploadedImage && (
-              <img src={uploadedImage} alt="Detection result" className="w-full h-auto object-contain" />
+              <img src={uploadedImage} alt="Detection result" className="w-full h-full object-contain" />
             )}
             <AnimatePresence>
               {showHeatmap && uploadedImage && (
@@ -152,6 +215,17 @@ const ImageResultPage: React.FC = () => {
           <GradientAxisLegend />
         </div>
       </div>
+
+      {/* 检测报告 */}
+      <DetectionReport 
+        fileName={fileName}
+        model={detectionModel}
+        threshold={detectionThreshold}
+        enhancementEnabled={enhancementEnabled}
+        forgedProbability={forgedProbability ? parseFloat(forgedProbability) : 0}
+        heatmapSpots={heatmapSpots}
+        getForgeryConclusion={getForgeryConclusion}
+      />
 
       {/* 控制面板 */}
       <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-md rounded-xl shadow-lg p-4 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center justify-center">
