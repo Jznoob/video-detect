@@ -29,16 +29,17 @@
   "dependencies": {
     "@headlessui/react": "^2.1.2",
     "@tsparticles/react": "^3.0.0",
+    "dom-to-image-more": "^3.6.0",
     "framer-motion": "^12.18.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "lucide-react": "^0.518.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-heatmap-grid": "^0.9.1",
+    "react-hot-toast": "^2.4.1",
     "recharts": "^2.15.3",
     "sonner": "^2.0.5",
-    "tsparticles": "^3.5.0",
-    "jspdf": "^2.5.1",
-    "html2canvas": "^1.4.1",
-    "react-hot-toast": "^2.4.1"
+    "tsparticles": "^3.5.0"
   }
 }

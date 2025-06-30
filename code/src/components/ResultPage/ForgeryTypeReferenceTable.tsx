@@ -15,11 +15,11 @@ const forgeryTypeList = [
 
 const ForgeryTypeReferenceTable: React.FC = () => (
   <div className="mt-12">
-    <h2 className="text-2xl font-bold mb-4 text-[#e5e7eb]">常见人脸伪造类型参考</h2>
-    <div className="overflow-x-auto rounded-xl shadow border border-divider bg-[#232B55]">
+    <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white transition-colors duration-300">常见人脸伪造类型参考</h2>
+    <div className="overflow-x-auto rounded-xl shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#232B55] transition-colors duration-300">
       <table className="min-w-full text-sm text-left">
         <thead>
-          <tr className="bg-[#181A20] text-[#e5e7eb] border-b border-divider">
+          <tr className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border-b border-gray-200 dark:border-gray-700">
             <th className="px-4 py-3 font-semibold">伪造类型</th>
             <th className="px-4 py-3 font-semibold">描述</th>
             <th className="px-4 py-3 font-semibold">建议验证方式</th>
@@ -27,10 +27,10 @@ const ForgeryTypeReferenceTable: React.FC = () => (
         </thead>
         <tbody>
           {forgeryTypeList.map((row) => (
-            <tr key={row.type} className="border-b border-divider last:border-0 hover:bg-hover transition">
-              <td className="px-4 py-2 text-[#e5e7eb] whitespace-nowrap">{row.type}</td>
-              <td className="px-4 py-2 text-muted">{row.desc}</td>
-              <td className="px-4 py-2 text-[#38bdf8]">{row.suggestion}</td>
+            <tr key={row.type} className="border-b border-gray-200 dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300">
+              <td className="px-4 py-2 text-black dark:text-white whitespace-nowrap">{row.type}</td>
+              <td className="px-4 py-2 text-gray-700 dark:text-gray-300">{row.desc}</td>
+              <td className="px-4 py-2 text-blue-500">{row.suggestion}</td>
             </tr>
           ))}
         </tbody>

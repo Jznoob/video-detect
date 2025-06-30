@@ -23,6 +23,14 @@ module.exports = {
       },
     },
   },
+  future: {
+    // Tailwind 3.3 起默认开启，手动禁用
+    disableColorPalettePlugin: true,
+  },
+  // ✅ fallback 到 sRGB (RGB/HEX)
+  experimental: {
+    optimizeUniversalDefaults: true,
+  },
   darkMode: "class",
   plugins: [],
 };

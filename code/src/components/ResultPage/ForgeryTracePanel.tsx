@@ -33,20 +33,20 @@ const ForgeryTracePanel: React.FC = () => (
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
   >
-    <h2 className="text-2xl font-bold mb-4 text-[#e5e7eb]">伪造溯源分析</h2>
+    <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white transition-colors duration-300">伪造溯源分析</h2>
     <div className="grid md:grid-cols-3 gap-4">
       {forgeryTypes.map((item) => (
         <div
           key={item.type}
-          className="bg-gradient-to-br from-[#232B55] to-[#1f2937] rounded-xl p-5 shadow-lg flex flex-col gap-2 border border-divider"
+          className="bg-white dark:bg-[#232B55] rounded-xl p-5 shadow-lg flex flex-col gap-2 border border-gray-200 dark:border-gray-700 transition-colors duration-300"
         >
           <div className="flex items-center gap-2 mb-1">
             {item.icon}
-            <span className="text-lg font-semibold text-[#e5e7eb]">{item.type}</span>
+            <span className="text-lg font-semibold text-gray-800 dark:text-white">{item.type}</span>
           </div>
-          <div className="text-muted text-sm mb-1">{item.desc}</div>
-          <div className="text-xs text-[#eab308] mb-1">可疑特征：{item.feature}</div>
-          <div className="flex items-center gap-1 text-xs text-[#38bdf8]">
+          <div className="text-gray-700 dark:text-gray-300 text-sm mb-1">{item.desc}</div>
+          <div className="text-xs text-yellow-600 mb-1">可疑特征：{item.feature}</div>
+          <div className="flex items-center gap-1 text-xs text-blue-500">
             <Lightbulb className="w-4 h-4" />
             建议：{item.suggestion}
           </div>
