@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toggleTheme as toggleThemeUtil } from "../../../utils/theme";
 
 const navs = [
   { label: "首页", path: "/" },
@@ -12,8 +13,8 @@ const Navbar: React.FC = () => {
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
 
   const toggleTheme = () => {
-    document.documentElement.classList.toggle("dark");
-    setDark(document.documentElement.classList.contains("dark"));
+    const isDark = toggleThemeUtil();
+    setDark(isDark);
   };
 
   return (

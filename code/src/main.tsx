@@ -4,6 +4,9 @@ import App from "./App";
 import "./index.css";
 import { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
+import { applyStoredTheme } from "./utils/theme";
+
+applyStoredTheme();
 
 initParticlesEngine(async (engine) => {
   await loadSlim(engine);

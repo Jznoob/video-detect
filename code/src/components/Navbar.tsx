@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box } from 'lucide-react';
 import { useLocation, useNavigate } from "react-router-dom";
+import { toggleTheme as toggleThemeUtil } from "../utils/theme";
 
 const navs = [
   { label: "首页", path: "/dashboard" },
@@ -14,8 +15,8 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const toggleTheme = () => {
-    document.documentElement.classList.toggle("dark");
-    setDark(document.documentElement.classList.contains("dark"));
+    const isDark = toggleThemeUtil();
+    setDark(isDark);
   };
 
   const isHistoryPage = location.pathname.startsWith("/history");
