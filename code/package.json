@@ -36,6 +36,9 @@
     "react-heatmap-grid": "^0.9.1",
     "recharts": "^2.15.3",
     "sonner": "^2.0.5",
-    "tsparticles": "^3.5.0"
+    "tsparticles": "^3.5.0",
+    "jspdf": "^2.5.1",
+    "html2canvas": "^1.4.1",
+    "react-hot-toast": "^2.4.1"
   }
 }

@@ -8,6 +8,7 @@ import ImageDetect from "./components/ImageDetect";
 import HistoryPanel from "./components/HistoryPanel";
 
 const VIDEO_MODELS = [
+  "VideoDetector",
   "ResNet",
   "Transformer",
   "Ensemble",
@@ -17,6 +18,7 @@ const VIDEO_MODELS = [
 ];
 
 const IMAGE_MODELS = [
+  "CPLNet",
   "ResNet-Image",
   "EfficientNet",
   "VisionTransformer",
