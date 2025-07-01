@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import VideoDetectionReport from '../components/ResultPage/VideoDetectionReport';
+import VideoForgeryTracePanel from '../components/ResultPage/VideoForgeryTracePanel';
+import VideoForgeryTypeReferenceTable from '../components/ResultPage/VideoForgeryTypeReferenceTable';
 
 interface FakeSegment {
   start: number;
@@ -68,6 +70,12 @@ const VideoResultPage: React.FC = () => {
 
         {/* 完整检测报告 */}
         <VideoDetectionReport {...detectionData} />
+        {/* 伪造溯源分析 */}
+        <div className="mb-6">
+          <VideoForgeryTracePanel />
+        </div>
+        {/* 常见伪造类型参考 */}
+        <VideoForgeryTypeReferenceTable />
       </div>
     </div>
   );
