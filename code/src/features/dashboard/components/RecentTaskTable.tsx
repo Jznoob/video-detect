@@ -16,40 +16,47 @@ const RecentTaskTable: React.FC<RecentTaskTableProps> = ({ tasks }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto rounded-xl bg-gray-800/90 p-1">
       <table className="min-w-full text-sm">
         <thead>
-          <tr className="bg-gray-50 dark:bg-gray-700">
-            <th className="px-4 py-2 text-left font-medium text-gray-600 dark:text-gray-300">文件名</th>
-            <th className="px-4 py-2 text-left font-medium text-gray-600 dark:text-gray-300">类型</th>
-            <th className="px-4 py-2 text-left font-medium text-gray-600 dark:text-gray-300">结果</th>
-            <th className="px-4 py-2 text-left font-medium text-gray-600 dark:text-gray-300">检测时间</th>
+          <tr>
+            <th className="px-4 py-3 text-left font-medium text-gray-300 border-b border-gray-700">文件名</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-300 border-b border-gray-700">类型</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-300 border-b border-gray-700">结果</th>
+            <th className="px-4 py-3 text-left font-medium text-gray-300 border-b border-gray-700">检测时间</th>
           </tr>
         </thead>
         <tbody>
           {recentTasks.map((task) => (
             <tr
               key={task.id}
-              className="border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition cursor-pointer"
+              className="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors duration-200 cursor-pointer"
               onClick={() => handleRowClick(task)}
             >
-              <td className="px-4 py-2 text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <td className="px-4 py-3 text-gray-100 flex items-center gap-2">
                 <FileTypeIcon type={task.type} />
                 <span className="truncate max-w-[200px]" title={task.fileName}>
                   {task.fileName}
                 </span>
               </td>
-              <td className="px-4 py-2 text-gray-700 dark:text-gray-300 capitalize">
+              <td className="px-4 py-3 text-gray-300 capitalize">
                 {task.type === "video" ? "视频" : "图片"}
               </td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-3">
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${getResultColor(task.result)}`}>
                   {task.result}
                 </span>
               </td>
-              <td className="px-4 py-2 text-gray-500 dark:text-gray-400">{task.time}</td>
+              <td className="px-4 py-3 text-gray-400">{task.time}</td>
             </tr>
           ))}
+          {recentTasks.length === 0 && (
+            <tr>
+              <td colSpan={4} className="px-4 py-8 text-center text-gray-400">
+                暂无检测记录
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

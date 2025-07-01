@@ -10,20 +10,20 @@ export type StatCardProps = {
 const StatCard: React.FC<StatCardProps> = ({
   title,
   value,
-  bgColor = "bg-white dark:bg-gray-800",
+  bgColor = "bg-gray-800/90",
   icon,
 }) => (
   <div
-    className={`group flex items-center gap-4 rounded-xl shadow p-6 ${bgColor} transition-transform duration-300 transform hover:scale-[1.02]`}
+    className={`group flex items-center gap-4 rounded-xl shadow-lg p-6 ${bgColor} transition-all duration-300 transform hover:scale-[1.02] hover:bg-gray-800`}
   >
     {icon && (
-      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 transition-all duration-300 group-hover:scale-110 opacity-80 group-hover:opacity-100">
+      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-700/50 text-gray-300 transition-all duration-300 group-hover:scale-110 opacity-80 group-hover:opacity-100">
         {icon}
       </div>
     )}
     <div>
-      <div className="text-sm text-gray-500 dark:text-gray-400">{title}</div>
-      <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</div>
+      <div className="text-sm text-gray-400">{title}</div>
+      <div className="text-2xl font-bold text-gray-100">{value}</div>
     </div>
   </div>
 );

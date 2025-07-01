@@ -7,7 +7,7 @@ const mockStats = [
   {
     title: "今日检测次数",
     value: 56,
-    iconBg: "bg-indigo-100 dark:bg-indigo-700",
+    iconBg: "bg-grey-800 dark:bg-green-700",
     icon: <Clock className="w-6 h-6 text-indigo-600 dark:text-indigo-200" />,
     to: "/history", // 可选跳转路径
   },

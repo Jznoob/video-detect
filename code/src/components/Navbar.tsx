@@ -20,14 +20,13 @@ const Navbar: React.FC = () => {
 
   const isHistoryPage = location.pathname.startsWith("/history");
 
-
   return (
-    <nav className="fixed top-0 left-0 right-0 h-16 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm shadow-sm border-b border-gray-100 dark:border-gray-800 z-50">
+    <nav className="fixed top-0 left-0 right-0 h-16 w-full bg-gray-800/95 backdrop-blur-sm border-b border-gray-700/50 z-50 shadow-lg shadow-black/10">
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo/系统名 */}
         <div className="flex items-center gap-3">
-          <Box className="w-7 h-7 text-blue-600 dark:text-blue-500" />
-          <div className="text-xl font-bold text-gray-800 dark:text-white tracking-wider select-none">
+          <Box className="w-7 h-7 text-blue-500" />
+          <div className="text-xl font-bold text-gray-100 tracking-wider select-none">
             LUXTRACE
           </div>
         </div>
@@ -37,10 +36,10 @@ const Navbar: React.FC = () => {
             <button
               key={nav.path}
               onClick={() => navigate(nav.path)}
-              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors
+              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200
                 ${(location.pathname === nav.path || (nav.path === "/history" && isHistoryPage))
-                  ? "bg-blue-600 text-white dark:bg-blue-700 dark:text-white"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"}
+                  ? "bg-blue-600/90 text-white shadow-sm shadow-blue-500/20"
+                  : "text-gray-300 hover:bg-gray-700/90 hover:text-gray-100"}
               `}
             >
               {nav.label}
@@ -49,7 +48,7 @@ const Navbar: React.FC = () => {
           {/* 主题切换按钮 */}
           <button
             onClick={toggleTheme}
-            className="ml-2 w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+            className="ml-2 w-9 h-9 flex items-center justify-center rounded-md border border-gray-600/50 bg-gray-700/50 hover:bg-gray-600/50 transition-all duration-200"
             title="切换主题"
           >
             {dark ? (

@@ -1,106 +1,76 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
 import VideoDetectionReport from '../components/ResultPage/VideoDetectionReport';
 
-const formatTime = (seconds: number) => {
-  const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-  const s = Math.floor(seconds % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
-};
-
-function generateFakeSegments(duration: number) {
-  const segments = [];
-  const count = Math.floor(2 + Math.random() * 3); // 2~4段
-  let used = new Set<number>();
-
-  while (segments.length < count) {
-    let start = Math.floor(Math.random() * (duration - 10));
-    let end = start + Math.floor(3 + Math.random() * 5);
-    if (end > duration) continue;
-
-    // 避免重叠
-    if ([...used].some(u => (start <= u && u <= end))) continue;
-    for (let i = start; i <= end; i++) used.add(i);
-
-    segments.push({
-      start,
-      end,
-      probability: parseFloat((0.7 + Math.random() * 0.3).toFixed(2)),
-    });
-  }
-
-  return segments;
+interface FakeSegment {
+  start: number;
+  end: number;
+  probability: number;
 }
 
 const VideoResultPage: React.FC = () => {
-  const location = useLocation();
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [videoDuration, setVideoDuration] = useState<number>(0);
-  const [forgedProbability, setForgedProbability] = useState<number>(Math.random());
-  const [fakeSegments, setFakeSegments] = useState<Array<{ start: number; end: number; probability: number }>>([]);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  // 获取当前时间
+  const currentTime = new Date().toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
 
-  const videoFile = location.state?.videoFile as File | undefined;
-  const fileName = videoFile ? videoFile.name : '未知文件名';
-
-  useEffect(() => {
-    if (videoFile) {
-      const url = URL.createObjectURL(videoFile);
-      setVideoUrl(url);
-
-      return () => {
-        URL.revokeObjectURL(url);
-      };
-    }
-  }, [videoFile]);
-
-  useEffect(() => {
-    if (videoDuration > 0) {
-      const segments = generateFakeSegments(videoDuration);
-      setFakeSegments(segments);
-    }
-  }, [videoDuration]);
-
-  const handleLoadedMetadata = () => {
-    if (videoRef.current) {
-      setVideoDuration(videoRef.current.duration);
-    }
+  // 固定的示例数据
+  const detectionData = {
+    fileName: "drone_surveillance_2025_07_01.mp4",
+    model: "ResNet",
+    threshold: 0.75,
+    forgedProbability: 0.7625,
+    detectionTime: currentTime,
+    fakeSegments: [
+      { start: 15, end: 20, probability: 0.85 },
+      { start: 45, end: 50, probability: 0.92 },
+      { start: 90, end: 95, probability: 0.78 }
+    ]
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">视频检测结果</h1>
-      <div className="flex justify-between items-center mb-6 max-w-full">
-        <span className="text-xl font-semibold text-gray-800 dark:text-white">文件名: {fileName}</span>
-        <span className="text-xl font-semibold text-gray-800 dark:text-white">时长: {formatTime(videoDuration)}</span>
-        <span className="text-xl font-semibold text-gray-800 dark:text-white">伪造概率: <span className="text-red-500">{(forgedProbability * 100).toFixed(2)}%</span></span>
-      </div>
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* 页面标题和文件信息 */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-100 mb-2">
+            视频检测结果
+          </h1>
+          <p className="text-gray-400">
+            文件名：{detectionData.fileName}
+          </p>
+        </div>
 
-      <div className="flex-grow bg-gray-900/50 rounded-xl shadow-lg p-4 flex items-center justify-center">
-        {videoUrl ? (
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            controls
-            onLoadedMetadata={handleLoadedMetadata}
-            className="w-full h-full object-contain"
-          />
-        ) : (
-          <div className="w-full h-[360px] flex items-center justify-center text-gray-500">视频加载中...</div>
-        )}
-      </div>
+        {/* 文件信息和伪造概率 */}
+        <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50 mb-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="space-y-2">
+              <div className="text-gray-300">
+                检测时间：<span className="text-gray-100">{detectionData.detectionTime}</span>
+              </div>
+              <div className="text-gray-300">
+                检测模型：<span className="text-gray-100">{detectionData.model}</span>
+              </div>
+            </div>
+            <div className="text-xl font-bold">
+              <span className="text-gray-300">伪造概率：</span>
+              <span className="text-yellow-400">
+                {(detectionData.forgedProbability * 100).toFixed(2)}%
+              </span>
+            </div>
+          </div>
+        </div>
 
-      <VideoDetectionReport
-        fileName={fileName}
-        model={location.state?.model}
-        threshold={location.state?.threshold}
-        enhancementEnabled={location.state?.enhancementEnabled}
-        forgedProbability={forgedProbability}
-        detectionTime={new Date().toLocaleString()}
-        fakeSegments={fakeSegments}
-      />
+        {/* 完整检测报告 */}
+        <VideoDetectionReport {...detectionData} />
+      </div>
     </div>
   );
 };
 
-export default VideoResultPage; 
+export default VideoResultPage;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Sparkles, SlidersHorizontal, Download, Image as ImageIcon } from 'lucide-react';
+import { Sparkles, SlidersHorizontal, Download, Image as ImageIcon, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ResultControlPanel from '../components/ResultPage/ResultControlPanel';
 import GradientAxisLegend from '../components/ResultPage/GradientAxisLegend';
@@ -191,117 +191,6 @@ const ImageResultPage: React.FC = () => {
   ];
 
   // 导出 PDF
-  // const handleExportPDF = async () => {
-  //   try {
-
-  //     if (!reportRef.current) return;
-  //     const fileBaseName = fileName.replace(/\.[^/.]+$/, "");
-  //     const pdf = new jsPDF({ unit: 'pt', format: 'a4' });
-  //     const padding = 32;
-  //     let y = padding;
-  //     // 标题
-  //     pdf.setFont('NotoSansSC', 'normal');
-  //     pdf.setFontSize(22);
-  //     pdf.text('LuxTrace 检测报告', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
-  //     y += 36;
-  //     pdf.setFont('NotoSansSC', 'normal');
-  //     pdf.setFontSize(12);
-  //     pdf.setTextColor('#666');
-  //     pdf.text('报告由 LuxTrace 系统生成', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
-  //     y += 32;
-  //     pdf.setTextColor('#222');
-  //     // 检测信息
-  //     pdf.setFontSize(14);
-  //     pdf.text(`检测时间：${detectionTime}`, padding, y);
-  //     y += 24;
-  //     pdf.text(`文件名：${fileName}`, padding, y);
-  //     y += 24;
-  //     pdf.text(`检测模型：${detectionModel}`, padding, y);
-  //     y += 24;
-  //     pdf.text(`检测阈值：${detectionThreshold}`, padding, y);
-  //     y += 24;
-  //     pdf.text(`增强功能：${enhancementEnabled ? '已启用' : '未启用'}`, padding, y);
-  //     y += 24;
-  //     pdf.text(`总体伪造概率：${forgedProbability ? (parseFloat(forgedProbability) * 100).toFixed(2) : '0.00'}%`, padding, y);
-  //     y += 32;
-  //     // 伪造区域
-  //     pdf.setFontSize(13);
-  //     pdf.setTextColor('#2563eb');
-  //     pdf.text('伪造区域分布（模拟）', padding, y);
-  //     y += 20;
-  //     pdf.setFontSize(11);
-  //     pdf.setTextColor('#222');
-  //     heatmapSpots.forEach((spot, idx) => {
-  //       pdf.text(`区域${idx + 1}：概率 ${(spot.spotProbability * 100).toFixed(1)}%`, padding + 12, y);
-  //       y += 16;
-  //     });
-  //     y += 8;
-  //     // 伪造类型预测
-  //     pdf.setFontSize(13);
-  //     pdf.setTextColor('#eab308');
-  //     pdf.text('伪造类型预测', padding, y);
-  //     y += 20;
-  //     pdf.setFontSize(11);
-  //     pdf.setTextColor('#222');
-  //     forgeryTypes.forEach((item) => {
-  //       pdf.text(`${item.type}：${item.desc}，特征：${item.feature}`, padding + 12, y);
-  //       y += 16;
-  //     });
-  //     y += 16;
-  //     // 截图热力图
-  //     document.body.classList.add("print-mode");
-  //     if (heatmapRef.current) {
-  //       console.log('heatmapRef.current:', heatmapRef.current);
-  //       const canvas = await html2canvas(heatmapRef.current!, {
-  //         backgroundColor: "#0f172a",
-  //         scale: 2,
-  //         useCORS: true,
-  //         allowTaint: true,
-  //         logging: false,
-  //        scrollY: -window.scrollY,
-         
-  //        onclone: (clonedDoc) => {
-  //         const all = clonedDoc.body.querySelectorAll("*");
-  //         all.forEach((el) => {
-  //           const style = window.getComputedStyle(el);
-        
-  //           // 替换 background-color 中的 oklch
-  //           const bg = style.backgroundColor;
-  //           if (bg?.includes("oklch")) {
-  //             (el as HTMLElement).style.backgroundColor = "#1e293b"; // 深色背景 fallback
-  //           }
-        
-  //           // 替换 color 中的 oklch
-  //           const color = style.color;
-  //           if (color?.includes("oklch")) {
-  //             (el as HTMLElement).style.color = "#f1f5f9"; // 浅色字体 fallback
-  //           }
-        
-  //           // 如果你用了 border-color / box-shadow 也可能要加
-  //           const borderColor = style.borderColor;
-  //           if (borderColor?.includes("oklch")) {
-  //             (el as HTMLElement).style.borderColor = "#334155"; // 你自定义的 border 色
-  //           }
-  //         });
-  //       },
-        
-  //       }
-  //     );
-  //       const imgData = await domtoimage.toPng(heatmapRef.current!);
-
-  //       const imgWidth = pdf.internal.pageSize.getWidth() - padding * 2;
-  //       const imgHeight = (canvas.height / canvas.width) * imgWidth;
-  //       pdf.addImage(imgData, 'PNG', padding, y, imgWidth, imgHeight);
-  //       y += imgHeight + 16;
-  //     }
-  //     // 下载
-  //     pdf.save(`检测报告_${fileBaseName}.pdf`);
-  //     return Promise.resolve();
-  //   } catch (error) {
-  //     console.error('Error while exporting PDF:', error);
-  //     return Promise.reject(error);
-  //   }
-  // };
   const handleExportPDF = async () => {
     try {
       if (!reportRef.current) return;
@@ -352,72 +241,116 @@ const ImageResultPage: React.FC = () => {
       toast.error('导出失败，请重试');
     }
   };
+
   return (
-    <div className="min-h-screen w-full bg-[#0f172a] dark:bg-[#0f172a] transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 text-gray-900 dark:text-white transition-colors duration-300">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{texts.pageTitle}</h1>
-          <button
-            onClick={() => toast.promise(handleExportPDF(), {
-              loading: '正在导出报告…',
-              success: '导出成功！',
-              error: '导出失败，请重试',
-            })}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800 dark:bg-[#1e293b] text-gray-100 dark:text-white hover:bg-gray-700 dark:hover:bg-gray-700 transition-colors duration-300 shadow border border-gray-700"
-          >
-            <Download className="w-5 h-5" /> 导出报告
-          </button>
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* 页面标题 */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-100">
+            {texts.pageTitle}
+          </h1>
+          <p className="mt-2 text-gray-400">
+            文件名：{fileName}
+          </p>
         </div>
-        <div ref={reportRef}>
-          <div className="flex flex-col md:flex-row gap-6">
-            <div ref={heatmapRef} className="flex-grow bg-gray-800 dark:bg-[#1e293b] rounded-xl shadow-lg p-4 flex items-center justify-center transition-colors duration-300">
-              <div className="relative w-full" style={{ aspectRatio: imageDimensions ? `${imageDimensions.width} / ${imageDimensions.height}` : '16 / 9' }}>
-                {uploadedImage && (
-                  <img src={uploadedImage} alt="Detection result" className="w-full h-full object-contain" />
-                )}
-                <AnimatePresence>
-                  {showHeatmap && uploadedImage && (
-                    <motion.svg
-                      className="absolute top-0 left-0 w-full h-full pointer-events-none"
-                      viewBox="0 0 100 100"
-                      preserveAspectRatio="none"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1, transition: { duration: 0.5 } }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <g style={{ opacity: heatmapOpacity }}>
-                        {heatmapSpots.map(spot => (
-                          <path key={spot.id} d={spot.path} fill={spot.color} style={{ opacity: spot.opacity }} />
-                        ))}
-                      </g>
-                    </motion.svg>
-                  )}
-                </AnimatePresence>
+
+        {/* 主要内容区域 */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* 左侧：检测报告和控制面板 */}
+          <div className="lg:col-span-1 space-y-6">
+            <DetectionReport
+              fileName={fileName}
+              model={detectionModel}
+              threshold={detectionThreshold}
+              enhancementEnabled={enhancementEnabled}
+              forgedProbability={forgedProbability ? parseFloat(forgedProbability) : 0}
+              heatmapSpots={heatmapSpots}
+              getForgeryConclusion={getForgeryConclusion}
+            />
+
+            <ResultControlPanel
+              showHeatmap={showHeatmap}
+              setShowHeatmap={setShowHeatmap}
+              heatmapOpacity={heatmapOpacity}
+              setHeatmapOpacity={setHeatmapOpacity}
+            />
+
+            <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50">
+              <h3 className="text-xl font-semibold text-gray-100 mb-4">操作</h3>
+              <div className="space-y-4">
+                <button
+                  onClick={() => setShowHeatmap(!showHeatmap)}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gray-700/50 hover:bg-gray-700/80 text-gray-100 rounded-lg transition-colors duration-200"
+                >
+                  {showHeatmap ? <EyeOff className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}
+                  {showHeatmap ? "隐藏热力图" : texts.viewHeatmap}
+                </button>
+
+                <button
+                  onClick={() => handleExportPDF()}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600/90 hover:bg-blue-700/90 text-white rounded-lg transition-colors duration-200"
+                >
+                  <Download className="w-5 h-5" />
+                  {texts.download}
+                </button>
               </div>
             </div>
-            <div className="flex-shrink-0 w-full md:w-24">
-              <GradientAxisLegend />
+          </div>
+
+          {/* 右侧：图片预览区域 */}
+          <div className="lg:col-span-2">
+            <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50">
+              <div className="relative w-full aspect-video bg-gray-700/50 rounded-lg overflow-hidden">
+                {uploadedImage && (
+                  <>
+                    <img
+                      src={uploadedImage}
+                      alt="检测图片"
+                      className="w-full h-full object-contain"
+                    />
+                    {showHeatmap && (
+                      <div
+                        ref={heatmapRef}
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ opacity: heatmapOpacity }}
+                      >
+                        <svg
+                          width="100%"
+                          height="100%"
+                          viewBox="0 0 100 100"
+                          preserveAspectRatio="none"
+                        >
+                          {heatmapSpots.map((spot) => (
+                            <path
+                              key={spot.id}
+                              d={spot.path}
+                              fill={spot.color}
+                              opacity={spot.opacity}
+                            />
+                          ))}
+                        </svg>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* 伪造痕迹面板 */}
+            <div className="mt-6">
+              <ForgeryTracePanel
+                forgedProbability={forgedProbability ? parseFloat(forgedProbability) : 0}
+                forgeryTypes={forgeryTypes}
+                heatmapSpots={heatmapSpots}
+              />
+            </div>
+
+            {/* 伪造类型参考表 */}
+            <div className="mt-6">
+              <ForgeryTypeReferenceTable forgeryTypes={forgeryTypes} />
             </div>
           </div>
-          <DetectionReport 
-            fileName={fileName}
-            model={detectionModel}
-            threshold={detectionThreshold}
-            enhancementEnabled={enhancementEnabled}
-            forgedProbability={forgedProbability ? parseFloat(forgedProbability) : 0}
-            heatmapSpots={heatmapSpots}
-            getForgeryConclusion={getForgeryConclusion}
-          />
-          <ForgeryTracePanel />
-          <ForgeryTypeReferenceTable />
-        </div>
-        <div className="bg-gray-800 dark:bg-[#1e293b] backdrop-blur-md rounded-xl shadow-lg p-4 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center justify-center transition-colors duration-300">
-          <ResultControlPanel
-            showHeatmap={showHeatmap}
-            setShowHeatmap={setShowHeatmap}
-            heatmapOpacity={heatmapOpacity}
-            setHeatmapOpacity={setHeatmapOpacity}
-          />
         </div>
       </div>
     </div>

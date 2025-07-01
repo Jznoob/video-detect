@@ -26,13 +26,13 @@ interface ResultControlPanelProps {
 
 const CustomSwitch = ({ checked, onChange, label, IconOn, IconOff }: any) => (
   <div className="flex items-center justify-between">
-    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
+    <span className="text-sm font-medium text-gray-300">{label}</span>
     <Switch
       checked={checked}
       onChange={onChange}
       className={`${
-        checked ? 'bg-blue-600' : 'bg-gray-400 dark:bg-gray-600'
-      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800`}
+        checked ? 'bg-blue-600/90' : 'bg-gray-600/50'
+      } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 focus:ring-offset-gray-800`}
     >
       <span className="sr-only">{label}</span>
       <span
@@ -43,7 +43,6 @@ const CustomSwitch = ({ checked, onChange, label, IconOn, IconOff }: any) => (
     </Switch>
   </div>
 );
-
 
 const ResultControlPanel: React.FC<ResultControlPanelProps> = ({
   showHeatmap,
@@ -56,37 +55,40 @@ const ResultControlPanel: React.FC<ResultControlPanelProps> = ({
   setPlayForgedOnly
 }) => {
   return (
-    <div className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl shadow p-8 space-y-6">
-      <h3 className="text-xl font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3 mb-5">控制面板</h3>
+    <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50">
+      <h3 className="text-xl font-semibold text-gray-100 border-b border-gray-700/50 pb-3 mb-5">控制面板</h3>
       
-      {setShowHeatmap && (
-        <CustomSwitch checked={showHeatmap} onChange={setShowHeatmap} label={texts.showHeatmap} />
-      )}
+      <div className="space-y-6">
+        {setShowHeatmap && (
+          <CustomSwitch checked={showHeatmap} onChange={setShowHeatmap} label={texts.showHeatmap} />
+        )}
 
-      {setShowMask && (
-        <CustomSwitch checked={showMask} onChange={setShowMask} label={texts.showMask} />
-      )}
+        {setShowMask && (
+          <CustomSwitch checked={showMask} onChange={setShowMask} label={texts.showMask} />
+        )}
 
-      {setPlayForgedOnly && (
-         <CustomSwitch checked={playForgedOnly} onChange={setPlayForgedOnly} label={texts.playForgedOnly} />
-      )}
+        {setPlayForgedOnly && (
+          <CustomSwitch checked={playForgedOnly} onChange={setPlayForgedOnly} label={texts.playForgedOnly} />
+        )}
 
-      {setHeatmapOpacity !== undefined && heatmapOpacity !== undefined && (
-        <div className="space-y-2">
-          <label htmlFor="opacity-slider" className="text-sm font-medium text-gray-700 dark:text-gray-300">{texts.heatmapOpacity}: {Math.round(heatmapOpacity * 100)}%</label>
-          <input
-            id="opacity-slider"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={heatmapOpacity}
-            onChange={(e) => setHeatmapOpacity(parseFloat(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-          />
-        </div>
-      )}
-
+        {setHeatmapOpacity !== undefined && heatmapOpacity !== undefined && (
+          <div className="space-y-2">
+            <label htmlFor="opacity-slider" className="text-sm font-medium text-gray-300">
+              {texts.heatmapOpacity}: {Math.round(heatmapOpacity * 100)}%
+            </label>
+            <input
+              id="opacity-slider"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={heatmapOpacity}
+              onChange={(e) => setHeatmapOpacity(parseFloat(e.target.value))}
+              className="w-full h-2 bg-gray-700/50 rounded-lg appearance-none cursor-pointer"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

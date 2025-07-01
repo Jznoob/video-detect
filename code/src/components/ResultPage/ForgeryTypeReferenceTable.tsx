@@ -14,23 +14,27 @@ const forgeryTypeList = [
 ];
 
 const ForgeryTypeReferenceTable: React.FC = () => (
-  <div className="mt-12">
-    <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white transition-colors duration-300">常见人脸伪造类型参考</h2>
-    <div className="overflow-x-auto rounded-xl shadow border border-gray-200 dark:border-gray-700 bg-white dark:bg-[#232B55] transition-colors duration-300">
-      <table className="min-w-full text-sm text-left">
+  <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50">
+    <h2 className="text-2xl font-bold mb-6 text-gray-100">常见人脸伪造类型参考</h2>
+    <div className="overflow-x-auto rounded-lg">
+      <table className="min-w-full text-sm">
         <thead>
-          <tr className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border-b border-gray-200 dark:border-gray-700">
-            <th className="px-4 py-3 font-semibold">伪造类型</th>
-            <th className="px-4 py-3 font-semibold">描述</th>
-            <th className="px-4 py-3 font-semibold">建议验证方式</th>
+          <tr className="bg-gray-700/50 border-b border-gray-600/50">
+            <th className="px-4 py-3 font-semibold text-left text-gray-100">伪造类型</th>
+            <th className="px-4 py-3 font-semibold text-left text-gray-100">描述</th>
+            <th className="px-4 py-3 font-semibold text-left text-gray-100">建议验证方式</th>
           </tr>
         </thead>
         <tbody>
-          {forgeryTypeList.map((row) => (
-            <tr key={row.type} className="border-b border-gray-200 dark:border-gray-700 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300">
-              <td className="px-4 py-2 text-black dark:text-white whitespace-nowrap">{row.type}</td>
-              <td className="px-4 py-2 text-gray-700 dark:text-gray-300">{row.desc}</td>
-              <td className="px-4 py-2 text-blue-500">{row.suggestion}</td>
+          {forgeryTypeList.map((row, index) => (
+            <tr 
+              key={row.type} 
+              className={`border-b border-gray-700/30 last:border-0 hover:bg-gray-700/50 transition-colors duration-200
+                ${index % 2 === 0 ? 'bg-gray-700/20' : 'bg-gray-700/30'}`}
+            >
+              <td className="px-4 py-3 text-gray-100 whitespace-nowrap font-medium">{row.type}</td>
+              <td className="px-4 py-3 text-gray-300">{row.desc}</td>
+              <td className="px-4 py-3 text-blue-400/90">{row.suggestion}</td>
             </tr>
           ))}
         </tbody>

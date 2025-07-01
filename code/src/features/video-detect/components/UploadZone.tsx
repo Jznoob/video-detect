@@ -68,7 +68,7 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange, onDelete, file })
       }}
       onDrop={handleDrop}
       onClick={openFile}
-      className="relative border-dashed border-2 border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+      className="relative border-dashed border-2 border-gray-600 dark:border-gray-500 rounded-lg p-6 text-center cursor-pointer bg-gray-800/40 hover:bg-gray-700/50 dark:hover:bg-gray-700/60 hover:border-gray-500 dark:hover:border-gray-400 transition-all duration-200"
     >
       <input
         ref={inputRef}
@@ -90,7 +90,7 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange, onDelete, file })
               e.stopPropagation();
               onDelete();
             }}
-            className="absolute -top-3 -right-3 w-7 h-7 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition shadow-lg"
+            className="absolute -top-3 -right-3 w-7 h-7 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center transition-colors duration-200 shadow-lg"
             title="删除视频"
           >
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -100,8 +100,8 @@ const UploadZone: React.FC<UploadZoneProps> = ({ onFileChange, onDelete, file })
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-2">
-          <svg className="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5V8.25A2.25 2.25 0 015.25 6h13.5A2.25 2.25 0 0121 8.25v8.25M3 16.5A2.25 2.25 0 005.25 18.75h13.5A2.25 2.25 0 0021 16.5M3 16.5l4.72-4.72a2.25 2.25 0 013.18 0l.85.85a2.25 2.25 0 003.18 0l4.72-4.72" /></svg>
-          <p className="text-gray-500 dark:text-gray-400">拖拽或点击上传视频（MP4/AVI/MKV，≤100MB）</p>
+          <svg className="w-10 h-10 text-gray-300 dark:text-gray-400 mb-2" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5V8.25A2.25 2.25 0 015.25 6h13.5A2.25 2.25 0 0121 8.25v8.25M3 16.5A2.25 2.25 0 005.25 18.75h13.5A2.25 2.25 0 0021 16.5M3 16.5l4.72-4.72a2.25 2.25 0 013.18 0l.85.85a2.25 2.25 0 003.18 0l4.72-4.72" /></svg>
+          <p className="text-gray-300 dark:text-gray-400">拖拽或点击上传视频（MP4/AVI/MKV，≤100MB）</p>
         </div>
       )}
     </div>

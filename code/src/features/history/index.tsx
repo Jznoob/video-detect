@@ -71,49 +71,49 @@ const HistoryPage: React.FC = () => {
   const stats = getStats();
 
   return (
-    <div className="min-h-screen bg-[#f7f8fa] dark:bg-[#181A20] text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-gray-900 text-gray-100">
       <Navbar />
       <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 space-y-8">
         {/* 页面标题 */}
         <div>
-          <h1 className="text-3xl font-bold text-[#232B55] dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-gray-100 mb-2">
             历史记录
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-400">
             查看所有检测记录和结果
           </p>
         </div>
 
         {/* 统计卡片 */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{stats.total}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">总记录</div>
+          <div className="bg-gray-800/90 rounded-xl shadow-lg p-4 border border-gray-700/50">
+            <div className="text-2xl font-bold text-blue-400">{stats.total}</div>
+            <div className="text-sm text-gray-400">总记录</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">{stats.videos}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">视频</div>
+          <div className="bg-gray-800/90 rounded-xl shadow-lg p-4 border border-gray-700/50">
+            <div className="text-2xl font-bold text-purple-400">{stats.videos}</div>
+            <div className="text-sm text-gray-400">视频</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.images}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">图片</div>
+          <div className="bg-gray-800/90 rounded-xl shadow-lg p-4 border border-gray-700/50">
+            <div className="text-2xl font-bold text-green-400">{stats.images}</div>
+            <div className="text-sm text-gray-400">图片</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400">{stats.fake}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">伪造</div>
+          <div className="bg-gray-800/90 rounded-xl shadow-lg p-4 border border-gray-700/50">
+            <div className="text-2xl font-bold text-red-400">{stats.fake}</div>
+            <div className="text-sm text-gray-400">伪造</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.real}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">真实</div>
+          <div className="bg-gray-800/90 rounded-xl shadow-lg p-4 border border-gray-700/50">
+            <div className="text-2xl font-bold text-green-400">{stats.real}</div>
+            <div className="text-sm text-gray-400">真实</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-            <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{stats.processing}</div>
-            <div className="text-sm text-gray-600 dark:text-gray-400">检测中</div>
+          <div className="bg-gray-800/90 rounded-xl shadow-lg p-4 border border-gray-700/50">
+            <div className="text-2xl font-bold text-yellow-400">{stats.processing}</div>
+            <div className="text-sm text-gray-400">检测中</div>
           </div>
         </div>
 
         {/* 筛选和搜索 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+        <div className="bg-gray-800/90 rounded-xl shadow-lg p-6 border border-gray-700/50">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <input
@@ -121,36 +121,36 @@ const HistoryPage: React.FC = () => {
                 placeholder="搜索文件名或模型..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 rounded-lg bg-gray-700/50 border border-gray-600 text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="flex gap-2">
               <button
                 onClick={() => setFilter("all")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   filter === "all"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                    ? "bg-blue-600/90 text-white shadow-sm shadow-blue-500/20"
+                    : "bg-gray-700/50 text-gray-300 hover:bg-gray-700/80 hover:text-gray-100"
                 }`}
               >
                 全部
               </button>
               <button
                 onClick={() => setFilter("video")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   filter === "video"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                    ? "bg-blue-600/90 text-white shadow-sm shadow-blue-500/20"
+                    : "bg-gray-700/50 text-gray-300 hover:bg-gray-700/80 hover:text-gray-100"
                 }`}
               >
                 视频
               </button>
               <button
                 onClick={() => setFilter("image")}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   filter === "image"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                    ? "bg-blue-600/90 text-white shadow-sm shadow-blue-500/20"
+                    : "bg-gray-700/50 text-gray-300 hover:bg-gray-700/80 hover:text-gray-100"
                 }`}
               >
                 图片
@@ -160,68 +160,68 @@ const HistoryPage: React.FC = () => {
         </div>
 
         {/* 记录列表 */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden">
+        <div className="bg-gray-800/90 rounded-xl shadow-lg overflow-hidden border border-gray-700/50">
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+              <thead className="bg-gray-700/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     文件信息
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     类型
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     结果
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     模型
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     置信度
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                     检测时间
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-gray-700/50">
                 {filteredData.map((record) => (
                   <tr
                     key={record.id}
                     onClick={() => handleRecordClick(record)}
-                    className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition"
+                    className="hover:bg-gray-700/30 cursor-pointer transition-colors duration-200"
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
                         <FileTypeIcon type={record.type} />
                         <div>
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="text-sm font-medium text-gray-100">
                             {record.fileName}
                           </div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                          <div className="text-xs text-gray-400">
                             {record.fileSize}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-gray-900 dark:text-white capitalize">
+                      <span className="text-sm text-gray-300 capitalize">
                         {record.type === "video" ? "视频" : "图片"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 py-1 text-xs rounded-full font-medium ${getResultColor(record.result)}`}>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getResultColor(record.result)}`}>
                         {getResultText(record.result)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       {record.model}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                      {record.result !== "检测中" ? `${(record.confidence * 100).toFixed(1)}%` : "-"}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                      {record.confidence ? `${(record.confidence * 100).toFixed(1)}%` : '-'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
                       {record.time}
                     </td>
                   </tr>

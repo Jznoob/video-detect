@@ -1,0 +1,102 @@
+/* 全局暗色主题样式 */
+@layer base {
+  body {
+    @apply bg-dark-primary text-text-primary;
+  }
+
+  /* 滚动条样式 */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-tertiary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-dark-card-hover;
+  }
+}
+
+/* 通用卡片样式 */
+.dark-card {
+  @apply bg-dark-card backdrop-blur-sm rounded-lg shadow-dark 
+         border border-white/5 transition-all duration-200;
+}
+
+.dark-card:hover {
+  @apply bg-dark-card-hover shadow-dark-lg;
+}
+
+/* 按钮基础样式 */
+.dark-button {
+  @apply px-4 py-2 rounded-lg font-medium transition-all duration-200
+         bg-dark-card hover:bg-dark-card-hover shadow-dark-sm
+         hover:shadow-dark focus:ring-2 focus:ring-accent-blue/50
+         disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* 输入框基础样式 */
+.dark-input {
+  @apply bg-dark-tertiary border border-white/10 rounded-lg px-4 py-2
+         focus:outline-none focus:ring-2 focus:ring-accent-blue/50
+         placeholder:text-text-muted text-text-primary;
+}
+
+/* 表格基础样式 */
+.dark-table {
+  @apply w-full border-collapse;
+}
+
+.dark-table th {
+  @apply bg-dark-secondary text-text-secondary font-medium px-4 py-3 text-left;
+}
+
+.dark-table td {
+  @apply px-4 py-3 border-t border-white/5;
+}
+
+.dark-table tr:hover {
+  @apply bg-dark-card-hover;
+}
+
+/* 标题样式 */
+.dark-title {
+  @apply text-2xl font-bold text-text-primary mb-6;
+}
+
+.dark-subtitle {
+  @apply text-xl font-semibold text-text-secondary mb-4;
+}
+
+/* 分割线 */
+.dark-divider {
+  @apply border-t border-white/5 my-4;
+}
+
+/* 标签样式 */
+.dark-tag {
+  @apply px-2 py-1 rounded-md text-sm font-medium bg-dark-card;
+}
+
+/* 状态标签 */
+.status-success {
+  @apply text-accent-green bg-accent-green/10 dark-tag;
+}
+
+.status-warning {
+  @apply text-accent-orange bg-accent-orange/10 dark-tag;
+}
+
+.status-error {
+  @apply text-red-500 bg-red-500/10 dark-tag;
+}
+
+/* 动画过渡 */
+.dark-transition {
+  @apply transition-all duration-200 ease-in-out;
+} 

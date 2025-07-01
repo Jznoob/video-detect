@@ -15,32 +15,34 @@ const DetectionReport: React.FC<DetectionReportProps> = ({ fileName, model, thre
   const conclusion = getForgeryConclusion(forgedProbability);
 
   return (
-    <div className="bg-white/30 dark:bg-gray-800/30 backdrop-blur-md rounded-lg shadow-lg p-6 mb-6 transition-colors duration-300">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">📝 检测报告</h2>
-      <div className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-        <div className="border-t pt-4 space-y-4 border-gray-200 dark:border-gray-700">
-          <p>图片信息:</p>
-          <ul className="list-disc list-inside">
-            <li>文件名: {fileName || '未知'}</li>
-            <li>检测模型: {model}</li>
-            <li>阈值: {threshold.toFixed(2)}</li>
-            <li>图像增强: {enhancementEnabled ? '启用' : '未启用'}</li>
-            <li>检测时间: {detectionTime}</li>
+    <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50">
+      <h2 className="text-2xl font-bold text-gray-100 mb-4">📝 检测报告</h2>
+      <div className="text-base text-gray-300 leading-relaxed">
+        <div className="border-t pt-4 space-y-4 border-gray-700/50">
+          <p className="text-gray-100">图片信息:</p>
+          <ul className="list-disc list-inside space-y-2">
+            <li className="text-gray-300">文件名: <span className="text-gray-100">{fileName || '未知'}</span></li>
+            <li className="text-gray-300">检测模型: <span className="text-gray-100">{model}</span></li>
+            <li className="text-gray-300">阈值: <span className="text-gray-100">{threshold.toFixed(2)}</span></li>
+            <li className="text-gray-300">图像增强: <span className="text-gray-100">{enhancementEnabled ? '启用' : '未启用'}</span></li>
+            <li className="text-gray-300">检测时间: <span className="text-gray-100">{detectionTime}</span></li>
           </ul>
         </div>
-        <div className="border-t pt-4 space-y-4 border-gray-200 dark:border-gray-700">
-          <p className={`${conclusion.color} font-semibold text-lg border p-2 rounded transition-colors duration-300`}>{conclusion.text}</p>
+        <div className="border-t pt-4 space-y-4 border-gray-700/50">
+          <p className={`${conclusion.color} font-semibold text-lg bg-gray-700/50 border border-gray-600/50 p-3 rounded-lg transition-colors duration-200`}>
+            {conclusion.text}
+          </p>
         </div>
-        <div className="border-t pt-4 space-y-4 border-gray-200 dark:border-gray-700">
-          <p>检测摘要:</p>
-          <ul className="list-disc list-inside">
-            <li>伪造概率: {forgedProbability.toFixed(2)}</li>
-            <li>区域分布:</li>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="border-t pt-4 space-y-4 border-gray-700/50">
+          <p className="text-gray-100">检测摘要:</p>
+          <ul className="list-disc list-inside space-y-2">
+            <li className="text-gray-300">伪造概率: <span className="text-gray-100">{forgedProbability.toFixed(2)}</span></li>
+            <li className="text-gray-300">区域分布:</li>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pl-6">
               {heatmapSpots.map((s, i) => (
-                <div key={s.id} className="flex items-center gap-3">
-                  <span className="inline-block w-4 h-4 rounded-full" style={{ backgroundColor: s.color }} />
-                  <span>{s.position}，概率 {(s.spotProbability * 100).toFixed(2)}%</span>
+                <div key={s.id} className="flex items-center gap-3 text-sm">
+                  <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: s.color }} />
+                  <span className="text-gray-300">{s.position}，概率 <span className="text-gray-100">{(s.spotProbability * 100).toFixed(2)}%</span></span>
                 </div>
               ))}
             </div>

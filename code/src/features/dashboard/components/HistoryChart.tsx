@@ -42,17 +42,18 @@ const DARK_COLORS = [
 const CustomPieTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
-    const percentage = ((data.value / (data.value + (data.name === "成功" ? 28 : 72))) * 100).toFixed(1);
+    const total = pieData.reduce((sum, d) => sum + d.value, 0);
+    const percentage = ((data.value / total) * 100).toFixed(1);
     
     return (
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-gray-900 dark:text-white">
+      <div className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium text-gray-100">
           {data.name}
         </p>
-        <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+        <p className="text-lg font-bold text-blue-400">
           {data.count} 次
         </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
+        <p className="text-xs text-gray-400">
           {percentage}%
         </p>
       </div>
@@ -64,27 +65,44 @@ const CustomPieTooltip = ({ active, payload }: any) => {
 const HistoryChart: React.FC<{ className?: string }> = ({ className = "" }) => {
   // 主题适配
   const isDark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
-  const barColor = isDark ? "#60A5FA" : "#3B82F6";
-  const pieColors = isDark ? DARK_COLORS : COLORS;
+  const barColor = "#60A5FA";  // 统一使用亮蓝色
+  const pieColors = DARK_COLORS;  // 统一使用暗色系列
   const total = pieData.reduce((sum, d) => sum + d.value, 0);
 
   return (
     <div className={`w-full flex flex-col md:flex-row gap-8 ${className}`}>
       {/* 柱状图 */}
-      <div className="flex-1 bg-white dark:bg-[#232B55] rounded-xl shadow p-4 flex flex-col items-center">
-        <div className="font-semibold text-gray-700 dark:text-gray-100 mb-2">近7天检测次数</div>
+      <div className="flex-1 bg-gray-800/90 rounded-xl shadow-lg p-6 flex flex-col items-center">
+        <div className="font-semibold text-gray-100 mb-4">近7天检测次数</div>
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={barData} margin={{ top: 16, right: 16, left: 0, bottom: 8 }}>
-            <XAxis dataKey="date" tick={{ fill: isDark ? '#cbd5e1' : '#475569', fontSize: 12 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: isDark ? '#cbd5e1' : '#475569', fontSize: 12 }} axisLine={false} tickLine={false} />
-            <Tooltip wrapperClassName="!rounded !shadow-lg !bg-white dark:!bg-gray-800 !border-0" labelClassName="text-xs" contentStyle={{ fontSize: 12 }} />
+            <XAxis 
+              dataKey="date" 
+              tick={{ fill: '#9CA3AF', fontSize: 12 }} 
+              axisLine={{ stroke: '#4B5563' }}
+              tickLine={{ stroke: '#4B5563' }}
+            />
+            <YAxis 
+              tick={{ fill: '#9CA3AF', fontSize: 12 }} 
+              axisLine={{ stroke: '#4B5563' }}
+              tickLine={{ stroke: '#4B5563' }}
+            />
+            <Tooltip 
+              cursor={{ fill: 'rgba(55, 65, 81, 0.3)' }}
+              contentStyle={{ 
+                backgroundColor: '#1F2937',
+                borderColor: '#374151',
+                borderRadius: '0.5rem',
+                color: '#F3F4F6'
+              }}
+            />
             <Bar dataKey="value" radius={[6, 6, 0, 0]} fill={barColor} maxBarSize={36} />
           </BarChart>
         </ResponsiveContainer>
       </div>
       {/* 饼图 */}
-      <div className="flex-1 bg-white dark:bg-[#232B55] rounded-xl shadow p-4 flex flex-col items-center justify-center">
-        <div className="font-semibold text-gray-700 dark:text-gray-100 mb-2">检测成功/失败占比</div>
+      <div className="flex-1 bg-gray-800/90 rounded-xl shadow-lg p-6 flex flex-col items-center justify-center">
+        <div className="font-semibold text-gray-100 mb-4">检测成功/失败占比</div>
         <ResponsiveContainer width="100%" height={240}>
           <PieChart>
             <Pie
@@ -105,7 +123,7 @@ const HistoryChart: React.FC<{ className?: string }> = ({ className = "" }) => {
                 value={`总数\n${total}`}
                 position="center"
                 fontSize={18}
-                fill={isDark ? '#fff' : '#232B55'}
+                fill="#F3F4F6"
                 style={{ whiteSpace: 'pre-line', fontWeight: 600 }}
               />
             </Pie>
@@ -114,8 +132,8 @@ const HistoryChart: React.FC<{ className?: string }> = ({ className = "" }) => {
               verticalAlign="bottom"
               align="center"
               iconType="circle"
-              formatter={(value, entry, idx) => (
-                <span style={{ color: isDark ? '#fff' : '#232B55', fontSize: 14 }}>{value}</span>
+              formatter={(value) => (
+                <span className="text-gray-300 text-sm">{value}</span>
               )}
             />
           </PieChart>

@@ -162,7 +162,7 @@ const DetectPage: React.FC = () => {
         {/* 左侧主功能区 */}
         <div className="lg:col-span-2 space-y-6">
           {/* Tab 切换 */}
-          <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6">
+          <div className="rounded-xl bg-gray-800 dark:bg-gray-800 shadow p-6">
             <Tab.Group selectedIndex={activeTab} onChange={setActiveTab}>
               <Tab.List className="flex gap-6 border-b border-gray-200 dark:border-gray-700 mb-6">
                 <Tab
@@ -214,7 +214,7 @@ const DetectPage: React.FC = () => {
                         <select
                           value={videoModel}
                           onChange={e => setVideoModel(e.target.value)}
-                          className="w-full rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
+                          className="w-full rounded-md border p-2 bg-gray-800 dark:bg-gray-800 dark:border-gray-700"
                         >
                           {VIDEO_MODELS.map(m => (
                             <option key={m} value={m}>{m}</option>
@@ -239,7 +239,7 @@ const DetectPage: React.FC = () => {
                           step={0.01}
                           value={videoThreshold}
                           onChange={e => setVideoThreshold(Number(e.target.value))}
-                          className="w-full mt-1 rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700 text-center"
+                          className="w-full mt-1 rounded-md border p-2 bg-gray-800 dark:bg-gray-800 dark:border-gray-700 text-center"
                         />
                       </div>
                     </div>
@@ -265,7 +265,7 @@ const DetectPage: React.FC = () => {
           </div>
           
           {/* 检测按钮 */}
-          <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6">
+          <div className="rounded-xl bg-gray-800 dark:bg-gray-800 shadow p-6">
             <button
               className="w-full py-3 rounded-lg bg-indigo-600 text-white font-semibold shadow hover:bg-indigo-700 transition disabled:opacity-50"
               disabled={loading || (activeTab === 0 ? !videoFile : !imageFile)}
@@ -278,7 +278,7 @@ const DetectPage: React.FC = () => {
         
         {/* 右侧历史记录区 */}
         <div className="lg:col-span-1">
-          <div className="rounded-xl bg-white dark:bg-gray-800 shadow p-6 h-[600px]">
+          <div className="rounded-xl bg-gray-800 dark:bg-gray-800 shadow p-6 h-[600px]">
             <HistoryPanel />
           </div>
         </div>

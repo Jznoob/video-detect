@@ -165,7 +165,8 @@ const ImageDetect: React.FC<ImageDetectProps> = ({
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onClick={openFile}
-        className="border-dashed border-2 border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+        
+        className="border-dashed border-2 border-gray-600 dark:border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-700 dark:hover:bg-gray-700 transition"
       >
         <input
           ref={inputRef}
@@ -275,11 +276,12 @@ const ImageDetect: React.FC<ImageDetectProps> = ({
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
+          
           <label className="block text-sm font-medium mb-1">检测模型</label>
           <select
             value={model}
             onChange={(e) => onModelChange(e.target.value)}
-            className="w-full rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700"
+            className="w-full rounded-md border p-2 bg-gray-800 dark:bg-gray-800 dark:border-gray-700"
           >
             {IMAGE_MODELS.map((m) => (
               <option key={m} value={m}>
@@ -306,7 +308,7 @@ const ImageDetect: React.FC<ImageDetectProps> = ({
             step={0.01}
             value={threshold}
             onChange={(e) => onThresholdChange(Number(e.target.value))}
-            className="w-full mt-1 rounded-md border p-2 bg-white dark:bg-gray-800 dark:border-gray-700 text-center"
+            className="w-full mt-1 rounded-md border p-2 bg-gray-800 dark:bg-gray-800 dark:border-gray-700 text-center"
           />
         </div>
       </div>

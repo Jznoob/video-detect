@@ -62,7 +62,7 @@ const HistoryPanel: React.FC = () => {
     <div className="h-full flex flex-col">
       {/* 标题栏 */}
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">历史记录</h3>
+        <h3 className="text-lg font-semibold text-white dark:text-white">历史记录</h3>
         <button
           onClick={() => setIsAutoScroll(!isAutoScroll)}
           className={`px-2 py-1 text-xs rounded transition ${
@@ -93,12 +93,12 @@ const HistoryPanel: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
                 onClick={() => handleRecordClick(record)}
-                className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
+                className="p-3 bg-gray-800 dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 cursor-pointer hover:shadow-md transition-all duration-200 hover:scale-[1.02]"
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <FileTypeIcon type={record.type} />
-                    <span className="text-sm font-medium text-gray-900 dark:text-white truncate max-w-32">
+                    <span className="text-sm font-medium text-white dark:text-white truncate max-w-32">
                       {record.fileName}
                     </span>
                   </div>
