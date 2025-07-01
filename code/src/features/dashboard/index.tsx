@@ -98,14 +98,14 @@ const Dashboard: React.FC = () => {
       </section>
 
       <section className="bg-gray-800 dark:bg-gray-800 rounded-xl shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-white dark:text-white mb-4">
           模型使用频率
         </h2>
         <ModelFrequencyChart />
       </section>
 
       <section className="bg-gray-800 dark:bg-gray-800 rounded-xl shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-white dark:text-white mb-4">
           检测活跃度 (近7日)
         </h2>
         <ErrorBoundary>
