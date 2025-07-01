@@ -21,9 +21,10 @@ export default function AppRoutes() {
         <Route path="/video-detect" element={<DetectPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/image-result" element={<ImageResultPage />} />
-        <Route path="/video-result" element={<VideoResultPage />} />
+        <Route path="/video-result/:id" element={<VideoResultPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/history/:id" element={<HistoryDetail />} />
+        
       </Route>
     </Routes>
   );

@@ -16,11 +16,11 @@ export interface ImageDetectProps {
 }
 
 const IMAGE_MODELS = [
+  "CPLNet",
   "ResNet-Image",
   "EfficientNet",
   "VisionTransformer",
-  "ConvNeXt",
-  "SwinTransformer",
+  "ConvNeXt"
 ];
 
 const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];

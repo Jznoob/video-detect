@@ -225,15 +225,15 @@ const ImageResultPage: React.FC = () => {
       y += 32;
   
       // 图片截图（使用 dom-to-image-more）
-      if (heatmapRef.current) {
-        const imgData = await domtoimage.toPng(heatmapRef.current);
+        const imgData = await domtoimage.toPng(reportRef.current);
+        const img = new Image();
+        img.src = imgData;
+        await new Promise(resolve => {
+          img.onload = resolve;
+        });
         const imgWidth = pdf.internal.pageSize.getWidth() - padding * 2;
-        const imgHeight = (400 / 800) * imgWidth; // 可按比例估算实际宽高
-  
+        const imgHeight = imgWidth * (img.height / img.width);
         pdf.addImage(imgData, 'PNG', padding, y, imgWidth, imgHeight);
-        y += imgHeight + 16;
-      }
-  
       // 下载
       pdf.save(`检测报告_${fileBaseName}.pdf`);
     } catch (error) {
@@ -258,6 +258,7 @@ const ImageResultPage: React.FC = () => {
         {/* 主要内容区域 */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* 左侧：检测报告和控制面板 */}
+          
           <div className="lg:col-span-1 space-y-6">
             <DetectionReport
               fileName={fileName}
@@ -299,8 +300,17 @@ const ImageResultPage: React.FC = () => {
           </div>
 
           {/* 右侧：图片预览区域 */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2" ref={reportRef}>
             <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50">
+            <div className="flex justify-end mb-2">
+      <button
+        onClick={handleExportPDF}
+        className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow"
+      >
+        <Download className="w-4 h-4" />
+        导出报告
+      </button>
+            </div>
               <div className="relative w-full aspect-video bg-gray-700/50 rounded-lg overflow-hidden">
                 {uploadedImage && (
                   <>

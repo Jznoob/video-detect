@@ -23,7 +23,6 @@ const IMAGE_MODELS = [
   "EfficientNet",
   "VisionTransformer",
   "ConvNeXt",
-  "SwinTransformer",
 ];
 
 // localStorage 工具函数
@@ -150,8 +149,12 @@ const DetectPage: React.FC = () => {
         imageFile: imageFile,
       };
       
-      const targetPath = activeTab === 0 ? "/video-result" : "/image-result";
-      navigate(targetPath, { state: detectData });
+      if (activeTab === 0) {
+        const detectId = videoFile?.name?.split(".")[0] || "demo";
+        navigate(`/video-result/${encodeURIComponent(detectId)}`);
+      } else {
+        navigate("/image-result", { state: detectData });
+      }
     }, 2000);
   };
 

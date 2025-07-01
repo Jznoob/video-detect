@@ -1,80 +1,57 @@
-import React, { useState } from 'react';
-import VideoDetectionReport from '../components/ResultPage/VideoDetectionReport';
+import React, { useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import useDetection from '../hooks/useDetection';
+import VideoPlayerWithOverlay from '../components/ResultPage/VideoPlayerWithOverlay';
+import ProbabilityTimeline from '../components/ResultPage/ProbabilityTimeline';
+import DetectionSummaryCard from '../components/ResultPage/DetectionSummaryCard';
+import FakeSegmentList from '../components/ResultPage/FakeSegmentList';
 import VideoForgeryTracePanel from '../components/ResultPage/VideoForgeryTracePanel';
 import VideoForgeryTypeReferenceTable from '../components/ResultPage/VideoForgeryTypeReferenceTable';
-
-interface FakeSegment {
-  start: number;
-  end: number;
-  probability: number;
-}
-
 const VideoResultPage: React.FC = () => {
-  // 获取当前时间
-  const currentTime = new Date().toLocaleString('zh-CN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false
-  });
+  const { id } = useParams<{ id: string }>();
+  const { data, isLoading, error } = useDetection(id ?? "demo");
+  console.log("检测 id:", id);
+  console.log("useDetection data:", data, "error:", error);
+  const [currentTime, setCurrentTime] = useState(0);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // 固定的示例数据
-  const detectionData = {
-    fileName: "drone_surveillance_2025_07_01.mp4",
-    model: "ResNet",
-    threshold: 0.75,
-    forgedProbability: 0.7625,
-    detectionTime: currentTime,
-    fakeSegments: [
-      { start: 15, end: 20, probability: 0.85 },
-      { start: 45, end: 50, probability: 0.92 },
-      { start: 90, end: 95, probability: 0.78 }
-    ]
-  };
+  if (isLoading) return <div className="p-6">加载中...</div>;
+  if (error || !data) return <div className="p-6 text-red-500">加载失败</div>;
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 页面标题和文件信息 */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-100 mb-2">
-            视频检测结果
-          </h1>
-          <p className="text-gray-400">
-            文件名：{detectionData.fileName}
-          </p>
-        </div>
-
-        {/* 文件信息和伪造概率 */}
-        <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50 mb-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div className="space-y-2">
-              <div className="text-gray-300">
-                检测时间：<span className="text-gray-100">{detectionData.detectionTime}</span>
-              </div>
-              <div className="text-gray-300">
-                检测模型：<span className="text-gray-100">{detectionData.model}</span>
-              </div>
-            </div>
-            <div className="text-xl font-bold">
-              <span className="text-gray-300">伪造概率：</span>
-              <span className="text-yellow-400">
-                {(detectionData.forgedProbability * 100).toFixed(2)}%
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* 完整检测报告 */}
-        <VideoDetectionReport {...detectionData} />
-        {/* 伪造溯源分析 */}
-        <div className="mb-6">
-          <VideoForgeryTracePanel />
-        </div>
-        {/* 常见伪造类型参考 */}
+    <div className="flex flex-col lg:flex-row gap-6 p-6">
+      <div className="lg:w-7/12 space-y-6">
+        <VideoPlayerWithOverlay
+          videoUrl="/uploads/video.mp4"
+          fakeSegments={data.fakeSegments}
+          onTimeChange={setCurrentTime}
+          ref={videoRef}
+        />
+        <ProbabilityTimeline
+          points={data.probTimeline}
+          currentTime={currentTime}
+          onSelect={t => {
+            if (videoRef.current) videoRef.current.currentTime = t;
+          }}
+        />
+      </div>
+      <div className="lg:w-5/12 space-y-6">
+        <DetectionSummaryCard
+          fileName={data.fileName}
+          model={data.model}
+          threshold={data.threshold}
+          forgedProbability={data.forgedProbability}
+          detectionTime={data.detectionTime}
+          fakeSegments={data.fakeSegments}
+        />
+        <FakeSegmentList
+          segments={data.fakeSegments}
+          currentTime={currentTime}
+          onJump={t => {
+            if (videoRef.current) videoRef.current.currentTime = t;
+          }}
+        />
+        <VideoForgeryTracePanel attribution={data.attribution} />
         <VideoForgeryTypeReferenceTable />
       </div>
     </div>
