@@ -1,19 +1,31 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { HistoryRecord, getRecentHistoryRecords, getResultColor } from "../../../services/historyData";
+import { useHistoryRecords } from "../../../hooks/useHistoryRecords"; // ✅ 只使用 hook
 import FileTypeIcon from "../../../components/FileTypeIcon";
 
-export type RecentTaskTableProps = {
-  tasks?: HistoryRecord[];
-};
-
-const RecentTaskTable: React.FC<RecentTaskTableProps> = ({ tasks }) => {
+const RecentTaskTable: React.FC = () => {
   const navigate = useNavigate();
-  const recentTasks = tasks || getRecentHistoryRecords(5);
+  const { records, loading } = useHistoryRecords(); // ✅ 从 hook 中获取记录数据
 
-  const handleRowClick = (record: HistoryRecord) => {
+  const recentTasks = records.slice(0, 5); // ✅ 取前 5 条
+  const handleRowClick = (record: any) => {
     navigate(`/history/${record.id}`);
   };
+
+  const getResultColor = (result: string) => {
+    switch (result) {
+      case "篡改":
+        return "text-red-600 bg-red-100 dark:bg-red-900/20";
+      case "未篡改":
+        return "text-green-600 bg-green-100 dark:bg-green-900/20";
+      case "检测中":
+        return "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20";
+      default:
+        return "text-gray-600 bg-gray-100 dark:bg-gray-900/20";
+    }
+  };
+
+  if (loading) return <p className="text-gray-400 px-4 py-2">加载中...</p>;
 
   return (
     <div className="overflow-x-auto rounded-xl bg-gray-800/90 p-1">
@@ -63,4 +75,4 @@ const RecentTaskTable: React.FC<RecentTaskTableProps> = ({ tasks }) => {
   );
 };
 
-export default RecentTaskTable; 
+export default RecentTaskTable;

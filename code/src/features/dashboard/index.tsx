@@ -103,17 +103,17 @@ const Dashboard: React.FC = () => {
         </h2>
         <ModelFrequencyChart />
       </section>
-
+{/* 
       <section className="bg-gray-800 dark:bg-gray-800 rounded-xl shadow p-6">
         <h2 className="text-lg font-semibold text-white dark:text-white mb-4">
-          检测活跃度 (近7日)
+          检测活跃度
         </h2>
         <ErrorBoundary>
           <Suspense fallback={<div className="h-48 w-full bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />}>
             <ActivityHeatmap />
           </Suspense>
         </ErrorBoundary>
-      </section>
+      </section> */}
     </main>
   );
 };

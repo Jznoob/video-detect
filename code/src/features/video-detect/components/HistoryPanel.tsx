@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  HistoryRecord, 
-  getAllHistoryRecords, 
-  getResultColor 
-} from "../../../services/historyData";
+import { useHistoryRecords, HistoryRecord } from "../../../hooks/useHistoryRecords";
 import FileTypeIcon from "../../../components/FileTypeIcon";
 
+// 用于本地判断颜色
+const getResultColor = (result: string): string => {
+  switch (result) {
+    case "篡改":
+      return "text-red-600 bg-red-100 dark:bg-red-900/20";
+    case "未篡改":
+      return "text-green-600 bg-green-100 dark:bg-green-900/20";
+    case "检测中":
+      return "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20";
+    default:
+      return "text-gray-600 bg-gray-100 dark:bg-gray-900/20";
+  }
+};
+
 const HistoryPanel: React.FC = () => {
+  const { records: historyData, loading } = useHistoryRecords();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoScroll, setIsAutoScroll] = useState(true);
-  const [historyData, setHistoryData] = useState<HistoryRecord[]>([]);
   const navigate = useNavigate();
-
-  // 获取历史记录数据
-  useEffect(() => {
-    setHistoryData(getAllHistoryRecords());
-  }, []);
 
   // 自动轮播
   useEffect(() => {
@@ -44,6 +49,14 @@ const HistoryPanel: React.FC = () => {
         return "未知";
     }
   };
+
+  if (loading) {
+    return (
+      <div className="h-full flex items-center justify-center text-gray-400">
+        正在加载历史记录...
+      </div>
+    );
+  }
 
   if (historyData.length === 0) {
     return (
@@ -108,7 +121,7 @@ const HistoryPanel: React.FC = () => {
                     {getResultText(record.result)}
                   </span>
                 </div>
-                
+
                 <div className="space-y-1 text-xs text-gray-500 dark:text-gray-400">
                   <div className="flex justify-between">
                     <span>时间：{record.time}</span>
@@ -145,4 +158,4 @@ const HistoryPanel: React.FC = () => {
   );
 };
 
-export default HistoryPanel; 
+export default HistoryPanel;

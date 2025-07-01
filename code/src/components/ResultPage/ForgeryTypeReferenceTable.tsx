@@ -15,7 +15,7 @@ const forgeryTypeList = [
 
 const ForgeryTypeReferenceTable: React.FC = () => (
   <div className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50">
-    <h2 className="text-2xl font-bold mb-6 text-gray-100">常见人脸伪造类型参考</h2>
+    <h2 className="text-2xl font-bold mb-6 text-gray-100">常见图片伪造类型参考</h2>
     <div className="overflow-x-auto rounded-lg">
       <table className="min-w-full text-sm">
         <thead>

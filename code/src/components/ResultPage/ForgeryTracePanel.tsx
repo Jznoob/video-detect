@@ -1,32 +1,42 @@
 import React from 'react';
-import { ScanEye, AlertTriangle, Lightbulb } from 'lucide-react';
+import { Lightbulb, Sparkles, ScanEye } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const forgeryTypes = [
-  {
-    type: 'FaceSwap',
-    icon: <ScanEye className="w-6 h-6 text-blue-400" />,
-    desc: '图片换脸，融合边界模糊，肤色/光照不自然',
-    feature: '面部轮廓边缘模糊，肤色/光照不一致',
-    suggestion: '放大边缘、对比原图、查找融合痕迹',
-  },
-  {
-    type: 'ExpressionEdit',
-    icon: <AlertTriangle className="w-6 h-6 text-yellow-400" />,
-    desc: '表情修改，如愤怒变笑，嘴型与语音不同步',
-    feature: '表情变化突兀，嘴型与语音不同步',
-    suggestion: '逐帧查看表情变化，听声音同步性',
-  },
-  {
-    type: 'GAN Synthesis',
-    icon: <Lightbulb className="w-6 h-6 text-purple-400" />,
-    desc: 'AI 生成整脸，细节异常',
-    feature: '背景/饰品/发丝等细节异常',
-    suggestion: '关注耳饰、发丝、背景等细节',
-  },
-];
+export interface Heatspot {
+  id: string;
+  path: string;
+  color: string;
+  opacity: number;
+  position?: string;
+  spotProbability: number;
+}
 
-const ForgeryTracePanel: React.FC = () => (
+export interface ForgeryType {
+  type: string;
+  desc: string;
+  feature: string;
+  suggestion: string;
+  iconType: "Lightbulb" | "Sparkles" | "ScanEye";
+}
+
+interface Props {
+  forgedProbability: number;
+  forgeryTypes: ForgeryType[];
+  heatmapSpots: Heatspot[];
+}
+
+// 图标映射表
+const iconMap: Record<ForgeryType["iconType"], JSX.Element> = {
+  Lightbulb: <Lightbulb className="w-6 h-6 text-purple-400" />,
+  Sparkles: <Sparkles className="w-6 h-6 text-blue-400" />,
+  ScanEye: <ScanEye className="w-6 h-6 text-blue-400" />,
+};
+
+const ForgeryTracePanel: React.FC<Props> = ({
+  forgedProbability,
+  forgeryTypes,
+  heatmapSpots
+}) => (
   <motion.div
     className="bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-gray-700/50"
     initial={{ opacity: 0, y: 40 }}
@@ -41,7 +51,7 @@ const ForgeryTracePanel: React.FC = () => (
           className="bg-gray-700/50 rounded-lg p-5 shadow-lg flex flex-col gap-2 border border-gray-600/50 hover:bg-gray-700/70 transition-all duration-200"
         >
           <div className="flex items-center gap-2 mb-1">
-            {item.icon}
+            {iconMap[item.iconType]}
             <span className="text-lg font-semibold text-gray-100">{item.type}</span>
           </div>
           <div className="text-gray-300 text-sm mb-1">{item.desc}</div>
@@ -56,4 +66,4 @@ const ForgeryTracePanel: React.FC = () => (
   </motion.div>
 );
 
-export default ForgeryTracePanel; 
+export default ForgeryTracePanel;

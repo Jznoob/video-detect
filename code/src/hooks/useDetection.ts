@@ -26,20 +26,22 @@ const mockMap: Record<string, DetectionResult> = {
     fileName: "video.mp4",
     model: "VideoDetector",
     threshold: 0.6,
-    forgedProbability: 0.94,
+    forgedProbability: 0.9,
     detectionTime: new Date().toISOString(),
     fakeSegments: [
-      { start: 5, end: 10, probability: 0.95 },
-      { start: 30, end: 35, probability: 0.9 },
+      { start: 2, end: 5, probability: 0.13 },
+      { start: 6, end: 10, probability: 0.11 },
+      { start: 11, end: 14, probability: 0.15 },
+      { start: 15, end: 30, probability: 0.92 },
     ],
-    probTimeline: [
-      { t: 5, p: 0.3 },
-      { t: 9, p: 0.95 },
-      { t: 35, p: 0.85 },
-    ],
+    probTimeline: Array.from({ length: 290 }, (_, i) => {
+      const t = i / 10;
+      const p = (t > 14 ? 0.8 + Math.random() * 0.2 : Math.random() * 0.2);
+      return { t, p };
+    }),
     attribution: [
-      { method: "Deepfakes", prob: 0.8 },
-      { method: "FaceSwap", prob: 0.2 },
+      { method: "Deepfakes", prob: 0.93 },
+      { method: "Voicemask", prob: 0.73 },
     ],
   },
 };

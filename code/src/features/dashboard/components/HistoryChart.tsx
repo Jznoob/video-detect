@@ -15,19 +15,19 @@ import {
 
 // 柱状图 mock 数据
 const barData = [
-  { date: "2024-06-01", value: 12 },
-  { date: "2024-06-02", value: 18 },
-  { date: "2024-06-03", value: 9 },
-  { date: "2024-06-04", value: 22 },
-  { date: "2024-06-05", value: 15 },
-  { date: "2024-06-06", value: 17 },
-  { date: "2024-06-07", value: 13 },
+  { date: "2025-06-26", value: 12 },
+  { date: "2025-06-27", value: 18 },
+  { date: "2025-06-28", value: 9 },
+  { date: "2025-06-29", value: 22 },
+  { date: "2025-06-30", value: 15 },
+  { date: "2025-07-01", value: 17 },
+  { date: "2025-07-02", value: 5 },
 ];
 
 // 饼图 mock 数据
 const pieData = [
-  { name: "成功", value: 72, count: 72 },
-  { name: "失败", value: 28, count: 28 },
+  { name: "伪造", value: 2151, count: 2151 },
+  { name: "真实", value: 472, count: 472 },
 ];
 const COLORS = [
   "#3B82F6", // 亮色蓝
@@ -67,7 +67,7 @@ const HistoryChart: React.FC<{ className?: string }> = ({ className = "" }) => {
   const isDark = typeof window !== "undefined" && document.documentElement.classList.contains("dark");
   const barColor = "#60A5FA";  // 统一使用亮蓝色
   const pieColors = DARK_COLORS;  // 统一使用暗色系列
-  const total = pieData.reduce((sum, d) => sum + d.value, 0);
+  const total = 2151;
 
   return (
     <div className={`w-full flex flex-col md:flex-row gap-8 ${className}`}>
