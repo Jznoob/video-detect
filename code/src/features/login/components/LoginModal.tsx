@@ -62,7 +62,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             >
               <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
                 <DialogTitle as="h3" className="text-lg font-medium leading-6 text-white">
-                  Log In to LUXTRACE
+                  Log In to DeepTruth
                 </DialogTitle>
                 <form onSubmit={handleLogin} className="mt-4">
                   <div className="space-y-4">

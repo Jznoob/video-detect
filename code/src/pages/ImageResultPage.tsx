@@ -55,12 +55,12 @@ const ImageResultPage: React.FC = () => {
 
       pdf.setFont('NotoSansSC', 'normal');
       pdf.setFontSize(22);
-      pdf.text('LuxTrace 检测报告', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
+      pdf.text('DeepTruth 检测报告', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
       y += 36;
 
       pdf.setFontSize(12);
       pdf.setTextColor('#666');
-      pdf.text('报告由 LuxTrace 系统生成', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
+      pdf.text('报告由 DeepTruth 系统生成', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
       y += 32;
 
       pdf.setTextColor('#222');
@@ -386,12 +386,12 @@ export default ImageResultPage;
   
 //       pdf.setFont('NotoSansSC', 'normal');
 //       pdf.setFontSize(22);
-//       pdf.text('LuxTrace 检测报告', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
+//       pdf.text('DeepTruth 检测报告', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
 //       y += 36;
   
 //       pdf.setFontSize(12);
 //       pdf.setTextColor('#666');
-//       pdf.text('报告由 LuxTrace 系统生成', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
+//       pdf.text('报告由 DeepTruth 系统生成', pdf.internal.pageSize.getWidth() / 2, y, { align: 'center' });
 //       y += 32;
   
 //       pdf.setTextColor('#222');

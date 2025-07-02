@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
         <div className="flex items-center gap-3">
           <Box className="w-7 h-7 text-blue-500" />
           <div className="text-xl font-bold text-gray-100 tracking-wider select-none">
-            LUXTRACE
+            DeepTruth
           </div>
         </div>
         {/* 右侧导航 */}
